@@ -7,7 +7,7 @@ interface Props {
 const FormContainer = ({ children }: Props) => {
     return (
         <Container maxWidth="xs">
-            <Paper elevation={3} sx={{ p: 4 }}>
+            <Paper elevation={3} sx={{ padding: 4 }}>
                 {children}
             </Paper>
         </Container>

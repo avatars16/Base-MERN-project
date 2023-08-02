@@ -156,15 +156,14 @@ const ProfileScreen = () => {
                         ),
                     }}
                 />
-
-                <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
+                <Grid container spacing={1} sx={{ mt: 2, flexWrap: "wrap-reverse", rowGap: 0.5 }}>
                     <Grid xs={12} sm={6}>
                         <Button
                             variant="contained"
                             color="error"
                             disabled={isLoading}
-                            fullWidth
-                            onClick={deleteUserHandler}>
+                            onClick={deleteUserHandler}
+                            fullWidth>
                             Delete account
                         </Button>
                     </Grid>
