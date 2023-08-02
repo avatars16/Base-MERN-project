@@ -84,7 +84,22 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.password = req.body.password;
     }
     const updatedUser = await user.save();
-    res.status(200).json({ _id: req.user._id, name: req.user.name, email: req.user.email });
+    res.status(200).json({ _id: req.user._id, name: updatedUser.name, email: updatedUser.email });
 });
 
-export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile };
+// @desc Update user profile
+// route DELETE /api/users/profile
+// @access Private
+const deleteUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    console.log(user);
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+    const error = await User.deleteOne({ _id: req.user._id });
+    res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+    res.status(200).send();
+});
+
+export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile, deleteUserProfile };

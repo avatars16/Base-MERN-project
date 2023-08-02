@@ -1,12 +1,23 @@
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
-import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { LinkContainer } from "react-router-bootstrap";
+import { useState } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Psychology, AccountCircle } from "@mui/icons-material";
+import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 
 const Header = () => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log(event);
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const { userInfo } = useAppSelector((state) => state.auth);
 
     const navigate = useNavigate();
@@ -24,43 +35,43 @@ const Header = () => {
     };
 
     return (
-        <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-                <Container>
-                    <LinkContainer to="/">
-                        <Navbar.Brand>MERN App</Navbar.Brand>
-                    </LinkContainer>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="ms-auto">
-                            {userInfo ? (
-                                <>
-                                    <NavDropdown title={userInfo.name} id={userInfo.id}>
-                                        <LinkContainer to="/profile">
-                                            <NavDropdown.Item>Profile</NavDropdown.Item>
-                                        </LinkContainer>
-                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                                    </NavDropdown>
-                                </>
-                            ) : (
-                                <>
-                                    <LinkContainer to="/login">
-                                        <Nav.Link>
-                                            <FaSignInAlt /> Sign In
-                                        </Nav.Link>
-                                    </LinkContainer>
-                                    <LinkContainer to="/register">
-                                        <Nav.Link>
-                                            <FaSignOutAlt /> Sign Up
-                                        </Nav.Link>
-                                    </LinkContainer>
-                                </>
-                            )}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </header>
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Psychology />
+                    <Box sx={{ pl: 1, flexGrow: 1 }}>
+                        <Typography
+                            variant="h6"
+                            component={Link}
+                            to={"/"}
+                            sx={{ textDecoration: "none", color: "inherit" }}>
+                            MERN Authentication
+                        </Typography>
+                    </Box>
+                    {userInfo ? (
+                        <>
+                            <Button color="inherit" onClick={handleClick}>
+                                {userInfo.name}
+                            </Button>
+                            <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
+                                <MenuItem component={Link} to="/profile">
+                                    <ListItemIcon>
+                                        <AccountCircle />
+                                    </ListItemIcon>
+                                    Profile
+                                </MenuItem>
+                                <Divider />
+                                <MenuItem onClick={logoutHandler}> Log out</MenuItem>
+                            </Menu>
+                        </>
+                    ) : (
+                        <Button component={Link} to="/login" color="inherit">
+                            Login
+                        </Button>
+                    )}
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
 };
 

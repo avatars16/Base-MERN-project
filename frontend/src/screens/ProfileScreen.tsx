@@ -1,83 +1,183 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { toast } from "react-toastify";
-import Loader from "../components/Loader";
-import { setCredentials } from "../slices/authSlice";
-import { useUpdateUserMutation } from "../slices/usersApiSlice";
+import { setCredentials, logout } from "../slices/authSlice";
+import { useUpdateUserMutation, useDeleteUserMutation } from "../slices/usersApiSlice";
+import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const ProfileScreen = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        showPassword: false,
+        showConfirmPassword: false,
+    });
+
+    const [passwordsMatch, setPasswordMatch] = useState(true);
+
+    const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        if (formData.showConfirmPassword && !formData.showPassword) return;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            showPassword: !prevFormData.showPassword,
+        }));
+    };
+
+    const handleToggleConfirmPasswordVisibility = () => {
+        if (!formData.showConfirmPassword && formData.showPassword) return;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            showConfirmPassword: !prevFormData.showConfirmPassword,
+        }));
+    };
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [register, { isLoading }] = useUpdateUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
     const { userInfo } = useAppSelector((state) => state.auth);
     useEffect(() => {
-        setName(userInfo.name);
-        setEmail(userInfo.email);
+        setFormData((prevFormData) => ({ ...prevFormData, name: userInfo.name }));
+        setFormData((prevFormData) => ({ ...prevFormData, email: userInfo.email }));
     }, [userInfo.setName, userInfo.setEmail]);
 
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (password !== confirmPassword) return toast.error("Passwords don't match");
+        if (formData.password !== formData.confirmPassword) return setPasswordMatch(false);
         try {
-            const res = await register({ _id: userInfo._id, name, email, password }).unwrap();
+            const res = await register({
+                _id: userInfo._id,
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+            }).unwrap();
             dispatch(setCredentials({ ...res }));
-            toast.success("Profile updated!");
             navigate("/");
         } catch (err: any) {
-            toast.error(err?.data?.message || err.error);
+            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
+        }
+    };
+
+    const deleteUserHandler = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!confirm("Are you sure you want to delete your account?")) return;
+        try {
+            await deleteUser({
+                _id: userInfo._id,
+            }).unwrap();
+            dispatch(logout());
+            navigate("/");
+        } catch (err: any) {
+            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
         }
     };
 
     return (
         <FormContainer>
-            <h1>Profile</h1>
+            <Typography variant="h4">Update Profile</Typography>
+            <form
+                onSubmit={(e) => {
+                    submitHandler(e);
+                }}>
+                <TextField
+                    variant="standard"
+                    label="Name"
+                    InputLabelProps={{ shrink: true }}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                />
 
-            <Form onSubmit={submitHandler}>
-                <Form.Group className="my-2" controlId="email">
-                    <Form.Label>Name </Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="email">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Confirm password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
-                </Form.Group>
-                {isLoading && <Loader />}
-                <Button type="submit" variant="primary" className="mt-3">
-                    Update
-                </Button>
-            </Form>
+                <TextField
+                    variant="standard"
+                    label="Email"
+                    InputLabelProps={{ shrink: true }}
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                />
+
+                <TextField
+                    variant="standard"
+                    label="Password"
+                    name="password"
+                    type={formData.showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleTogglePasswordVisibility}>
+                                    {formData.showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <TextField
+                    variant="standard"
+                    label="Confirm password"
+                    name="confirmPassword"
+                    type={formData.showConfirmPassword ? "text" : "password"}
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    error={!passwordsMatch}
+                    helperText={!passwordsMatch && "Passwords don't match"}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                                    {formData.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
+                    <Grid xs={12} sm={6}>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            disabled={isLoading}
+                            fullWidth
+                            onClick={deleteUserHandler}>
+                            Delete account
+                        </Button>
+                    </Grid>
+                    <Grid xs={12} sm={6}>
+                        <Button type="submit" variant="contained" color="primary" disabled={isLoading} fullWidth>
+                            Update Profile
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
+            <Snackbar open={formFeedback.open} autoHideDuration={6000}>
+                <Alert severity="error">{formFeedback.errorMessage}</Alert>
+            </Snackbar>
         </FormContainer>
     );
 };

@@ -1,18 +1,44 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import FormContainer from "../components/FormContainer";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { toast } from "react-toastify";
-import Loader from "../components/Loader";
 import { setCredentials } from "../slices/authSlice";
 import { useRegisterMutation } from "../slices/usersApiSlice";
+import FormContainer from "../components/FormContainer";
 
 const RegisterScreen = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        showPassword: false,
+        showConfirmPassword: false,
+    });
+    const [passwordsMatch, setPasswordMatch] = useState(true);
+    const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        if (formData.showConfirmPassword && !formData.showPassword) return;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            showPassword: !prevFormData.showPassword,
+        }));
+    };
+
+    const handleToggleConfirmPasswordVisibility = () => {
+        if (!formData.showConfirmPassword && formData.showPassword) return;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            showConfirmPassword: !prevFormData.showConfirmPassword,
+        }));
+    };
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -26,65 +52,109 @@ const RegisterScreen = () => {
 
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (password !== confirmPassword) return toast.error("Passwords don't match");
+        setPasswordMatch(true);
+        if (formData.password !== formData.confirmPassword) return setPasswordMatch(false);
         try {
-            const res = await register({ name, email, password }).unwrap();
+            const res = await register({
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+            }).unwrap();
             dispatch(setCredentials({ ...res }));
-            toast.success("Logged in successfully!");
+            true;
             navigate("/");
         } catch (err: any) {
-            toast.error(err?.data?.message || err.error);
+            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
         }
     };
 
     return (
         <FormContainer>
-            <h1>Register</h1>
+            <Typography variant="h4">Register</Typography>
+            <form
+                onSubmit={(e) => {
+                    submitHandler(e);
+                }}>
+                <TextField
+                    variant="standard"
+                    label="Name"
+                    InputLabelProps={{ shrink: true }}
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                />
 
-            <Form onSubmit={submitHandler}>
-                <Form.Group className="my-2" controlId="email">
-                    <Form.Label>Name </Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="email">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}></Form.Control>
-                </Form.Group>
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Confirm password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
-                </Form.Group>
-                {isLoading && <Loader />}
-                <Button type="submit" variant="primary" className="mt-3">
-                    Sign In
-                </Button>
-            </Form>
+                <TextField
+                    variant="standard"
+                    label="Email"
+                    InputLabelProps={{ shrink: true }}
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                />
 
-            <Row className="py-3">
-                <Col>
-                    Existing customer? <Link to={`/login`}>Login</Link>
-                </Col>
-            </Row>
+                <TextField
+                    variant="standard"
+                    label="Password"
+                    name="password"
+                    type={formData.showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleTogglePasswordVisibility}>
+                                    {formData.showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <TextField
+                    variant="standard"
+                    label="Confirm password"
+                    name="confirmPassword"
+                    type={formData.showConfirmPassword ? "text" : "password"}
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                    error={!passwordsMatch}
+                    helperText={!passwordsMatch && "Passwords don't match"}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                                    {formData.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+
+                <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
+                    <Grid xs={12} sm={6}>
+                        <Button type="submit" variant="contained" color="primary" disabled={isLoading} fullWidth>
+                            Register
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
+            <Snackbar open={formFeedback.open} autoHideDuration={6000}>
+                <Alert severity="error">{formFeedback.errorMessage}</Alert>
+            </Snackbar>
         </FormContainer>
     );
 };

@@ -1,4 +1,4 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Paper } from "@mui/material";
 
 interface Props {
     children: React.ReactNode;
@@ -6,12 +6,10 @@ interface Props {
 
 const FormContainer = ({ children }: Props) => {
     return (
-        <Container>
-            <Row className="justify-content-md-center mt-5">
-                <Col xs={12} md={6} className="card p-5">
-                    {children}
-                </Col>
-            </Row>
+        <Container maxWidth="xs">
+            <Paper elevation={3} sx={{ p: 4 }}>
+                {children}
+            </Paper>
         </Container>
     );
 };

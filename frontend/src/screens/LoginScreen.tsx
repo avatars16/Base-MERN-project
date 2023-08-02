@@ -1,16 +1,31 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import FormContainer from "../components/FormContainer";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import { toast } from "react-toastify";
-import Loader from "../components/Loader";
+import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert, Box } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginScreen = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        showPassword: false,
+    });
+    const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            showPassword: !prevFormData.showPassword,
+        }));
+    };
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -27,48 +42,70 @@ const LoginScreen = () => {
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await login({ email, password }).unwrap();
+            const res = await login({ ...formData }).unwrap();
             dispatch(setCredentials({ ...res }));
-            toast.success("Logged in successfully!");
             navigate("/");
         } catch (err: any) {
-            toast.error(err?.data?.message || err.error);
+            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
         }
         console.log("submit");
     };
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <Typography variant="h4">Login</Typography>
+            <form
+                onSubmit={(e) => {
+                    submitHandler(e);
+                }}>
+                <TextField
+                    variant="standard"
+                    label="Email"
+                    InputLabelProps={{ shrink: true }}
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    required
+                />
 
-            <Form onSubmit={submitHandler}>
-                <Form.Group className="my-2" controlId="email">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}></Form.Control>
-                </Form.Group>
+                <TextField
+                    variant="standard"
+                    label="Password"
+                    name="password"
+                    type={formData.showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    margin="normal"
+                    fullWidth
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleTogglePasswordVisibility}>
+                                    {formData.showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
 
-                <Form.Group className="my-2" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}></Form.Control>
-                </Form.Group>
-                {isLoading && <Loader />}
-                <Button type="submit" variant="primary" className="mt-3">
-                    Sign In
-                </Button>
-            </Form>
-
-            <Row className="py-3">
-                <Col>
-                    New Customer? <Link to={`/register`}>Register</Link>
-                </Col>
-            </Row>
+                <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
+                    <Grid xs={12} sm={6}>
+                        <Button type="submit" variant="contained" color="primary" disabled={isLoading} fullWidth>
+                            Login
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Box sx={{ mt: 2 }}>
+                    <Typography paragraph>
+                        Don't have an account? <Link to="/register">Register here!</Link>
+                    </Typography>
+                </Box>
+            </form>
+            <Snackbar open={formFeedback.open} autoHideDuration={6000}>
+                <Alert severity="error">{formFeedback.errorMessage}</Alert>
+            </Snackbar>
         </FormContainer>
     );
 };

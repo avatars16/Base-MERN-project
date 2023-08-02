@@ -1,17 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
-import { Container } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/ReactToastify.min.css";
+import { CssBaseline, Container } from "@mui/material";
 
 const App = () => {
     return (
         <>
+            <CssBaseline />
             <Header />
-            <ToastContainer />
-            <Container className="my-2">
-                <Outlet />
-            </Container>
+            <main>
+                <Container maxWidth="md" sx={{ mt: 5 }}>
+                    <Outlet /> {/* Puts the element passed in the router inside of this element */}
+                </Container>
+            </main>
         </>
     );
 };
