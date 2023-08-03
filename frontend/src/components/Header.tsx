@@ -11,7 +11,6 @@ const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log(event);
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {

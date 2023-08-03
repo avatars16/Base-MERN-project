@@ -4,8 +4,9 @@ import FormContainer from "../components/FormContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { setCredentials, logout } from "../slices/authSlice";
 import { useUpdateUserMutation, useDeleteUserMutation } from "../slices/usersApiSlice";
-import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert } from "@mui/material";
+import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const ProfileScreen = () => {
     const [formData, setFormData] = useState({
@@ -156,7 +157,7 @@ const ProfileScreen = () => {
                         ),
                     }}
                 />
-                <Grid container spacing={1} sx={{ mt: 2, flexWrap: "wrap-reverse", rowGap: 0.5 }}>
+                <Grid container spacing={1} sx={{ mt: 2 }}>
                     <Grid xs={12} sm={6}>
                         <Button
                             variant="contained"

@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import HomeScreen from "./screens/HomeScreen.tsx";
 import LoginScreen from "./screens/LoginScreen.tsx";
 import RegisterScreen from "./screens/RegisterScreen.tsx";

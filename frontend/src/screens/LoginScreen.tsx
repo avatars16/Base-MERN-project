@@ -4,8 +4,9 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import FormContainer from "../components/FormContainer";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert, Box } from "@mui/material";
+import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert, Box } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const LoginScreen = () => {
     const [formData, setFormData] = useState({
@@ -48,7 +49,6 @@ const LoginScreen = () => {
         } catch (err: any) {
             setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
         }
-        console.log("submit");
     };
     return (
         <FormContainer>

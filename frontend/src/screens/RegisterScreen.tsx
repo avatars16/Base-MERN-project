@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, IconButton, InputAdornment, Typography, Grid, Snackbar, Alert } from "@mui/material";
+import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { setCredentials } from "../slices/authSlice";
 import { useRegisterMutation } from "../slices/usersApiSlice";
 import FormContainer from "../components/FormContainer";
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 
 const RegisterScreen = () => {
     const [formData, setFormData] = useState({

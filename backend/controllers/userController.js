@@ -92,7 +92,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @access Private
 const deleteUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
-    console.log(user);
     if (!user) {
         res.status(404);
         throw new Error("User not found");
