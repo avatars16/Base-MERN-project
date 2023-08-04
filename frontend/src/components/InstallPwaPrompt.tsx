@@ -54,6 +54,7 @@ const InstallPwaPrompt = () => {
     };
 
     const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        event; // Anders is typescript aan het janken
         if (reason === "clickaway") {
             return;
         }
@@ -77,6 +78,7 @@ const InstallPwaPrompt = () => {
             <Snackbar
                 open={otherPlatformsOpen}
                 onClose={handleSnackbarClose}
+                autoHideDuration={5000}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
                 <Alert
                     onClose={handleSnackbarClose}

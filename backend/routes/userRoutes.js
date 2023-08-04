@@ -9,8 +9,10 @@ import {
     getUserProfile,
     updateUserProfile,
     deleteUserProfile,
+    googleAuthUser,
 } from "../controllers/userController.js";
 
+router.post("/auth/google", googleAuthUser);
 router.post("/auth", authUser);
 router.post("/", registerUser);
 router.post("/logout", logoutUser);

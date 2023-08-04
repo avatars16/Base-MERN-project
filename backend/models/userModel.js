@@ -14,7 +14,10 @@ const userSchema = mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
+        },
+        googleId: {
+            type: String,
+            unique: true,
         },
     },
     {
@@ -24,6 +27,10 @@ const userSchema = mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
     //"this" is user which is being saved
+    if (!this.password && !this.googleId) {
+        const err = new Error("Either password or googleId must be present");
+        return next(err);
+    }
     if (!this.isModified("password")) next();
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);

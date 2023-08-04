@@ -6,6 +6,7 @@ import { logout } from "../slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { googleLogout } from "@react-oauth/google";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
@@ -27,6 +28,7 @@ const Header = () => {
         try {
             await logoutApiCall().unwrap();
             dispatch(logout());
+            googleLogout();
             navigate("/login");
         } catch (error: any) {
             console.log(error);
