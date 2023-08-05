@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { googleLogout } from "@react-oauth/google";
+import DarkModeToggle from "./DarkModeToggle";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
@@ -49,6 +50,7 @@ const Header = () => {
                             MERN Authentication
                         </Typography>
                     </Box>
+                    <DarkModeToggle />
                     {userInfo ? (
                         <>
                             <Button color="inherit" onClick={handleClick}>

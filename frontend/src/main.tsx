@@ -10,6 +10,7 @@ import HomeScreen from "./screens/HomeScreen.tsx";
 import AuthScreen from "./screens/AuthScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
+import { ThemeContextProvider, useThemeContext } from "./theme/ThemeContextProvider";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,7 +30,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
         <React.StrictMode>
-            <RouterProvider router={router} />
+            <ThemeContextProvider>
+                <RouterProvider router={router} />
+            </ThemeContextProvider>
         </React.StrictMode>
     </Provider>
 );
