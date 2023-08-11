@@ -1,0 +1,31 @@
+{
+    "formFields": {
+        "email": "Email",
+        "password": "Wachtwoord",
+        "confirmPassword": "Bevestig wachtwoord",
+        "name": "Naam"
+    },
+    "buttons": {
+        "submit": "Verzend",
+        "cancel": "Annuleer",
+        "back": "Terug"
+    },
+    "header": {
+        "title": "MERN Authenticatie",
+        "profile": "Profiel",
+        "logout": "Log uit",
+        "hiUser": "Hoi {{userName}}",
+        "language": "taal"
+    },
+    "authPage": {
+        "login": "login",
+        "register": "registreer",
+        "alreadyAccount": "Heb je al een account?",
+        "noAccount": "Nog geen account?",
+        "loginHere": "Log hier in!",
+        "registerHere": "Registreer hier!"
+    },
+    "hero": {
+        "text": "Dit is een basis opzetje voor Authenticatie met gebruik van het MERN framework. Het slaat JWT op in HTTP-Only cookies. Daarnaast gebruikt het Redux Toolkit, MUI library en i18next."
+    }
+}

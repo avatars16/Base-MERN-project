@@ -8,12 +8,16 @@ import { useRegisterMutation, useLoginMutation } from "../slices/usersApiSlice";
 import FormContainer from "../components/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
+import { useTranslation } from "react-i18next";
+import Text from "../components/Text";
 
 interface Props {
     isSignUp: Boolean;
 }
 
 const AuthScreen = ({ isSignUp }: Props) => {
+    const { t } = useTranslation();
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -81,7 +85,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
     return (
         <FormContainer>
             <Typography variant="h4" sx={{ mb: 2 }}>
-                {isSignUp ? "Register" : "Login"}
+                {isSignUp ? <Text tKey="authPage.register" /> : <Text tKey="authPage.login" />}
             </Typography>
             <form
                 onSubmit={(e) => {
@@ -90,7 +94,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                 {isSignUp && (
                     <TextField
                         variant="standard"
-                        label="Name"
+                        label={<Text tKey="formFields.name" />}
                         InputLabelProps={{ shrink: true }}
                         name="name"
                         value={formData.name}
@@ -103,7 +107,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
 
                 <TextField
                     variant="standard"
-                    label="Email"
+                    label={<Text tKey="formFields.email" />}
                     InputLabelProps={{ shrink: true }}
                     name="email"
                     type="email"
@@ -116,7 +120,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
 
                 <TextField
                     variant="standard"
-                    label="Password"
+                    label={<Text tKey="formFields.password" />}
                     name="password"
                     type={formData.showPassword ? "text" : "password"}
                     value={formData.password}
@@ -137,7 +141,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                 {isSignUp && (
                     <TextField
                         variant="standard"
-                        label="Confirm password"
+                        label={<Text tKey="formFields.confirmPassword" />}
                         name="confirmPassword"
                         type={formData.showConfirmPassword ? "text" : "password"}
                         value={formData.confirmPassword}
@@ -167,7 +171,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                             color="primary"
                             disabled={registerProp.isLoading || loginProp.isLoading}
                             fullWidth>
-                            {isSignUp ? "Register" : "Login"}
+                            {isSignUp ? <Text tKey="authPage.register" /> : <Text tKey="authPage.login" />}
                         </Button>
                     </Grid>
                     <Grid xs={12} sm={6}>
@@ -178,11 +182,17 @@ const AuthScreen = ({ isSignUp }: Props) => {
                     <Typography paragraph>
                         {isSignUp ? (
                             <>
-                                Already have an account? <Link to="/login">Login here!</Link>
+                                <Text tKey="authPage.alreadyAccount" />{" "}
+                                <Link to="/login">
+                                    <Text tKey="authPage.loginHere" />!
+                                </Link>
                             </>
                         ) : (
                             <>
-                                Don't have an account? <Link to="/register">Register here!</Link>
+                                <Text tKey="authPage.noAccount" />{" "}
+                                <Link to="/register">
+                                    <Text tKey="authPage.registerHere" />!
+                                </Link>
                             </>
                         )}
                     </Typography>

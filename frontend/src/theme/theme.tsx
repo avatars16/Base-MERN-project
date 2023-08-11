@@ -1,6 +1,6 @@
-import { PaletteMode } from "@mui/material";
+import { Direction, PaletteMode } from "@mui/material";
 
-export const getDesignTokens = (mode: PaletteMode) => ({
+export const getDesignTokens = (mode: PaletteMode, direction: Direction) => ({
     palette: {
         mode,
         ...(mode === "light"
@@ -18,4 +18,5 @@ export const getDesignTokens = (mode: PaletteMode) => ({
                   background: { default: "#061a28", paper: "#061a28" },
               }),
     },
+    direction,
 });

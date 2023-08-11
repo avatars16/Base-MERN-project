@@ -107,7 +107,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // route POST /api/users/logout
 // @access Public
 const logoutUser = asyncHandler(async (req, res) => {
-    res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+    res.cookie("jwt", "", { httpOnly: true, expires: new Date(0), sameSite: "strict" });
     res.status(200).json({ message: `User Logged out` });
 });
 
@@ -151,7 +151,7 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
         throw new Error("User not found");
     }
     const error = await User.deleteOne({ _id: req.user._id });
-    res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+    res.cookie("jwt", "", { httpOnly: true, expires: new Date(0), sameSite: "strict" });
     res.status(200).send();
 });
 

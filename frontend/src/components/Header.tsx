@@ -8,6 +8,7 @@ import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { googleLogout } from "@react-oauth/google";
 import DarkModeToggle from "./DarkModeToggle";
+import Text from "./Text";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
@@ -47,29 +48,31 @@ const Header = () => {
                             component={Link}
                             to={"/"}
                             sx={{ textDecoration: "none", color: "inherit" }}>
-                            MERN Authentication
+                            <Text tKey="header.title" />
                         </Typography>
                     </Box>
                     <DarkModeToggle />
                     {userInfo ? (
                         <>
                             <Button color="inherit" onClick={handleClick}>
-                                {userInfo.name}
+                                <Text tKey="header.hiUser" params={{ userName: userInfo.name }} />
                             </Button>
                             <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
                                 <MenuItem component={Link} to="/profile">
                                     <ListItemIcon>
                                         <AccountCircle />
                                     </ListItemIcon>
-                                    Profile
+                                    <Text tKey="header.profile" />
                                 </MenuItem>
                                 <Divider />
-                                <MenuItem onClick={logoutHandler}> Log out</MenuItem>
+                                <MenuItem onClick={logoutHandler}>
+                                    <Text tKey="header.logout" />
+                                </MenuItem>
                             </Menu>
                         </>
                     ) : (
                         <Button component={Link} to="/login" color="inherit">
-                            Login
+                            <Text tKey="authPage.login" />
                         </Button>
                     )}
                 </Toolbar>

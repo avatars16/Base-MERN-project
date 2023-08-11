@@ -1,24 +1,23 @@
-import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
-import { CssBaseline, Container, ThemeProvider } from "@mui/material";
 import InstallPwaPrompt from "./components/InstallPwaPrompt";
-import { ThemeContextProvider, useThemeContext } from "./theme/ThemeContextProvider";
+import { useTranslation } from "react-i18next";
+import { Outlet } from "react-router-dom";
+import { CssBaseline, Container } from "@mui/material";
+import CheckLocaleChange from "./components/CheckLocale";
 
 const App = () => {
-    const { theme } = useThemeContext();
-
+    const { t } = useTranslation();
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Header />
-                <main>
-                    <Container maxWidth="md" sx={{ mt: 5 }}>
-                        <Outlet /> {/* Puts the element passed in the router inside of this element */}
-                    </Container>
-                </main>
-                <InstallPwaPrompt />
-            </ThemeProvider>
+            <CssBaseline />
+            <Header />
+            <main>
+                <Container maxWidth="md" sx={{ mt: 5 }}>
+                    <Outlet /> {/* Puts the element passed in the router inside of this element */}
+                    <CheckLocaleChange />
+                </Container>
+            </main>
+            <InstallPwaPrompt />
         </>
     );
 };

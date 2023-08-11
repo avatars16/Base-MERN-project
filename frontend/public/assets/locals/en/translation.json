@@ -1,0 +1,31 @@
+{
+    "formFields": {
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm password",
+        "name": "Name"
+    },
+    "buttons": {
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "back": "Back"
+    },
+    "header": {
+        "title": "MERN Authentication",
+        "profile": "Profile",
+        "logout": "Log out",
+        "hiUser": "Hi {{userName}}",
+        "language": "language"
+    },
+    "authPage": {
+        "login": "Login",
+        "register": "Register",
+        "alreadyAccount": "Already have an account?",
+        "noAccount": "Don't have an account",
+        "loginHere": "Login here!",
+        "registerHere": "Register here!"
+    },
+    "hero": {
+        "text": "This is a boilerplate for MERN authentication that stores a JWT in an HTTP-Only cookie. It also uses Redux Toolkit and the React Bootstrap library"
+    }
+}

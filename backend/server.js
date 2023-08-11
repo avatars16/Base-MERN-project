@@ -1,15 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
-const port = process.env.PORT || 5000;
 import userRoutes from "./routes/userRoutes.js";
 import path from "path";
+const port = process.env.PORT || 5000;
+dotenv.config();
 connectDB();
 
 const app = express();
+app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies etc we need to trust this proxy
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());

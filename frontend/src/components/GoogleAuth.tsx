@@ -1,10 +1,9 @@
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
-import { useEffect } from "react";
-import { GoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import { useAuthGoogleMutation } from "../slices/usersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../slices/authSlice";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch } from "../hooks/reduxHooks";
 
 const GoogleAuth = () => {
     var clientId: string = "286829291882-d5m5frt1qd9m16pjv0lho10aii043bin.apps.googleusercontent.com";
