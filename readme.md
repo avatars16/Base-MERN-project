@@ -12,3 +12,7 @@ This project is based on the following tutorials:
     **Multilingual / darkmode**
 -   https://www.youtube.com/watch?v=w04LXKlusCQ
 -   https://medium.com/@itayperry91/react-and-mui-change-muis-theme-mode-direction-and-language-including-date-pickers-ad8e91af30ae Mostly followed this one, redux functionality added on my own
+
+**Backend**
+
+-   https://www.youtube.com/watch?v=DZBGEVgL2eE Mongoose crash course

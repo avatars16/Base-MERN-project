@@ -11,6 +11,18 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
             unique: true,
+            lowercase: true,
+            validate: {
+                validator: (email) => {
+                    console.log(email);
+                    const emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    const matches = email.match(emailValidationRegex);
+                    if (matches === null) return false;
+                    if (email === matches[0]) return true;
+                    return false;
+                },
+                message: (props) => `${props.value} is not a valid email adress`,
+            },
         },
         password: {
             type: String,
