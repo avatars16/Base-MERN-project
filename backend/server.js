@@ -1,13 +1,20 @@
 import express from "express";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import path from "path";
-const port = process.env.PORT || 5000;
+import dotenv from "dotenv";
+import logger from "./logger/index.js";
+process.on("uncaughtException", (err) => {
+    logger.error("Uncaught Exception:", err);
+    process.exit(1); // Exit the application with an error code (1).
+});
+
 dotenv.config();
 connectDB();
+
+const port = process.env.PORT || 5000;
 
 const app = express();
 app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies etc we need to trust this proxy
@@ -29,7 +36,6 @@ if (process.env.NODE_ENV === "production") {
 }
 app.use(notFound);
 app.use(errorHandler);
-
 app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    logger.info(`Server started on port ${port} and environment is ${process.env.NODE_ENV}`);
 });

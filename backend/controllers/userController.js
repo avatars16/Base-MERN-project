@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import jwt from "jsonwebtoken";
-const axios = import("axios");
+import ValidationError from "../errors/validationError.js";
 
 // @desc Auth user/set token
 // route POST /api/users/auth
@@ -18,8 +18,7 @@ const authUser = asyncHandler(async (req, res) => {
             email: user.email,
         });
     } else {
-        res.status(401);
-        throw new Error("Invalid user or password");
+        throw new ValidationError("Invalid user or password");
     }
 });
 
@@ -34,8 +33,6 @@ const googleAuthUser = asyncHandler(async (req, res) => {
         clientId !== process.env.GOOGLE_CLIENT_ID ||
         decodedToken.exp < Math.floor(Date.now() / 1000 || !email_verified)
     ) {
-        //check if the token is actually from google
-        res.status(400);
         throw new Error("Something went wrong");
     }
     const user = await User.findOne({ email: decodedToken.email });
@@ -70,8 +67,7 @@ const googleAuthUser = asyncHandler(async (req, res) => {
             email: user.email,
         });
     } else {
-        res.status(400);
-        throw new Error("Invalid user data");
+        throw new ValidationError("Invalid user data");
     }
 });
 
@@ -82,8 +78,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const userExists = await User.findOne({ email });
     if (userExists) {
-        res.status(400);
-        throw new Error("User already exists");
+        throw new ValidationError("Email address already taken", [{ name: "email", message: "Email adress taken" }]);
     }
     const user = await User.create({
         name,

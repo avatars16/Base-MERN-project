@@ -14,7 +14,6 @@ const userSchema = mongoose.Schema(
             lowercase: true,
             validate: {
                 validator: (email) => {
-                    console.log(email);
                     const emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
                     const matches = email.match(emailValidationRegex);
                     if (matches === null) return false;
