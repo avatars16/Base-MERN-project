@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 
 class ValidationError extends Error {
     name: string;
-    fields: string[];
-    constructor(message: string, fields: string[]) {
+    fields?: { [key: string]: string }[];
+    constructor(message: string, fields?: { [key: string]: string }[]) {
         super(message);
         this.name = "ValidationError";
         this.fields = fields;
