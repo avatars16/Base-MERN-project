@@ -11,11 +11,10 @@ const GoogleAuth = () => {
     const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
-    const [googleAuth, { isLoading }] = useAuthGoogleMutation();
+    const [googleAuth] = useAuthGoogleMutation();
     const handleOnSucces = async (credentialResponse: CredentialResponse) => {
         try {
             const res = await googleAuth({ ...credentialResponse }).unwrap();
-            console.log(res);
             dispatch(setCredentials({ ...res }));
             navigate("/");
         } catch (err: any) {

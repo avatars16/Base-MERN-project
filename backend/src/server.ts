@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/errorMiddleware";
 import connectDB from "./config/db";
-// import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoutes";
 import path from "path";
 import dotenv from "dotenv";
 import logger from "./logger/index";
@@ -21,7 +21,7 @@ app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies e
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-// app.use("/api/users/", userRoutes);
+app.use("/api/users/", userRoutes);
 
 if (process.env.NODE_ENV === "production") {
     const __dirname = path.resolve();

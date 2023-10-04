@@ -5,19 +5,16 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { setCredentials } from "../slices/authSlice";
 import { useRegisterMutation, useLoginMutation } from "../slices/usersApiSlice";
-import FormContainer from "../components/FormContainer";
+import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
-import { useTranslation } from "react-i18next";
-import Text from "../components/Text";
+import Text from "../components/shared/Text";
 
 interface Props {
     isSignUp: Boolean;
 }
 
 const AuthScreen = ({ isSignUp }: Props) => {
-    const { t } = useTranslation();
-
     const [formData, setFormData] = useState({
         name: "",
         email: "",

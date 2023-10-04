@@ -13,8 +13,6 @@ import "dayjs/locale/en";
 import "dayjs/locale/nl";
 
 export interface MUILocaleData {
-    muiCore: Localization;
-    muiDatePicker: any;
     dayJSLanguage: string;
     countryCode: string;
     title: string;
@@ -22,8 +20,6 @@ export interface MUILocaleData {
 }
 
 const dutch: MUILocaleData = {
-    muiCore: materialLocaleDutch,
-    muiDatePicker: datePickerLocaleDutch,
     dayJSLanguage: "nl",
     countryCode: "nl",
     title: "Dutch",
@@ -31,8 +27,6 @@ const dutch: MUILocaleData = {
 };
 
 const english: MUILocaleData = {
-    muiCore: materialLocaleEnglish,
-    muiDatePicker: datePickerLocaleEnglish,
     dayJSLanguage: "en",
     countryCode: "gb",
     title: "English",
@@ -41,12 +35,30 @@ const english: MUILocaleData = {
 
 // RTL language
 const hebrew: MUILocaleData = {
-    muiCore: materialLocaleHebrew,
-    muiDatePicker: datePickerLocaleEnglish, // no Hebrew in here 😔 very sad!
     dayJSLanguage: "he",
     countryCode: "il",
     title: "Hebrew",
     direction: "rtl",
+};
+
+export const retrieveLocalization = (dayJSLanguage: string): Localization => {
+    switch (dayJSLanguage) {
+        case "nl":
+            return materialLocaleDutch;
+        case "he":
+            return materialLocaleHebrew;
+        default:
+            return materialLocaleEnglish;
+    }
+};
+
+export const retrieveDatePickerLocale = (dayJSLanguage: string) => {
+    switch (dayJSLanguage) {
+        case "nl":
+            return datePickerLocaleDutch;
+        default:
+            return datePickerLocaleEnglish;
+    }
 };
 
 export const supportedLocales: MUILocaleData[] = [english, dutch, hebrew];

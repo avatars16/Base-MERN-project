@@ -1,9 +1,10 @@
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
-import generateToken from "../utils/generateToken.js";
+import User from "../models/userModel";
+import generateToken from "../utils/generateToken";
 import jwt from "jsonwebtoken";
-import ValidationError from "../errors/validationError.js";
+import ValidationError from "../errors/validationError";
 import { TokenPayload } from "google-auth-library";
+import logger from "../logger/index";
 
 // @desc Auth user/set token
 // route POST /api/users/auth
@@ -29,6 +30,7 @@ const authUser = asyncHandler(async (req, res) => {
 const googleAuthUser = asyncHandler(async (req, res) => {
     const { credential, clientId, select_by } = req.body;
     const decodedToken = jwt.decode(credential) as TokenPayload;
+    logger.info(decodedToken);
     if (
         decodedToken.aud !== process.env.GOOGLE_CLIENT_ID ||
         clientId !== process.env.GOOGLE_CLIENT_ID ||

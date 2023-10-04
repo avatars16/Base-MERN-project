@@ -6,6 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { useTranslation } from "react-i18next";
+import { retrieveDatePickerLocale, retrieveLocalization } from "../theme/SupportedLocales";
 
 export const MUIWrapperContext = createContext({
     toggleColorMode: () => {},
@@ -26,7 +27,12 @@ export default function MUIWrapper({ children }: { children: React.ReactNode }) 
     );
 
     const theme = useMemo(
-        () => createTheme(getDesignTokens(mode, locale.direction), locale.muiCore, locale.muiDatePicker),
+        () =>
+            createTheme(
+                getDesignTokens(mode, locale.direction),
+                retrieveLocalization(locale.dayJSLanguage),
+                retrieveDatePickerLocale(locale.dayJSLanguage)
+            ),
         [mode, locale]
     );
     useEffect(() => {

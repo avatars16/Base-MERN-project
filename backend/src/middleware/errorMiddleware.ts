@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import ValidationError from "../errors/validationError";
 import { Request, Response, NextFunction } from "express";
+import logger from "../logger";
 
 const notFound = (req: Request, res: Response, next: NextFunction) => {
     const error = new Error(`Not found -${req.originalUrl}`);
@@ -9,6 +10,7 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    logger.error(err);
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
     if (err instanceof ValidationError) return ValidationError.handle(err, req, res, next);

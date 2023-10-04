@@ -16,3 +16,8 @@ This project is based on the following tutorials:
 **Backend**
 
 -   https://www.youtube.com/watch?v=DZBGEVgL2eE Mongoose crash course
+
+Todo:
+[] Tutorial about typescript in general
+[] Tutorial about mongoose and typescript
+[] Tutorial about mongoose but then for mysql

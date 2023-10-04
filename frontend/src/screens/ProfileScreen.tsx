@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FormContainer from "../components/FormContainer";
+import FormContainer from "../components/forms/FormContainer";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { setCredentials, logout } from "../slices/authSlice";
 import { useUpdateUserMutation, useDeleteUserMutation } from "../slices/usersApiSlice";

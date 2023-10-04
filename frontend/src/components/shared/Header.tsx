@@ -1,14 +1,15 @@
 import { useState } from "react";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { useLogoutMutation } from "../slices/usersApiSlice";
-import { logout } from "../slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { useLogoutMutation } from "../../slices/usersApiSlice";
+import { logout } from "../../slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { googleLogout } from "@react-oauth/google";
 import DarkModeToggle from "./DarkModeToggle";
 import Text from "./Text";
+import LocaleToggle from "./LocaleToggle";
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); //The element beneath the menu should open
@@ -51,6 +52,7 @@ const Header = () => {
                             <Text tKey="header.title" />
                         </Typography>
                     </Box>
+                    <LocaleToggle />
                     <DarkModeToggle />
                     {userInfo ? (
                         <>

@@ -1,16 +1,10 @@
-import React from "react";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, useTheme } from "@mui/material";
-import { MUIWrapperContext } from "./MUIWrapper";
-import { MUILocaleData, supportedLocales } from "../theme/SupportedLocales";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { saveLocale } from "../slices/localesSlice";
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { MUILocaleData, supportedLocales } from "../../theme/SupportedLocales";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { saveLocale } from "../../slices/localesSlice";
 import Text from "./Text";
 import "flag-icon-css/css/flag-icons.min.css";
-const DarkModeToggle = () => {
-    const theme = useTheme();
-    const { toggleColorMode } = React.useContext(MUIWrapperContext);
+const LocaleToggle = () => {
     const { locale } = useAppSelector((state) => state.locales);
     const dispatch = useAppDispatch();
     return (
@@ -34,7 +28,10 @@ const DarkModeToggle = () => {
                         {supportedLocales.map((item) => {
                             return (
                                 // @ts-ignore - necessary to load object into value
-                                <MenuItem key={item.title} value={item}>
+                                <MenuItem
+                                    key={item.title}
+                                    value={item}
+                                    autoFocus={item.dayJSLanguage === locale.dayJSLanguage}>
                                     <Box
                                         className={`flag-icon flag-icon-${item.countryCode}`}
                                         sx={{ marginRight: 0.5 }}></Box>
@@ -45,14 +42,8 @@ const DarkModeToggle = () => {
                     </Select>
                 </FormControl>
             </Box>
-            <Box>
-                <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-                    {theme.palette.mode}
-                    {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-                </IconButton>
-            </Box>
         </>
     );
 };
 
-export default DarkModeToggle;
+export default LocaleToggle;

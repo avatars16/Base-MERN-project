@@ -1,7 +1,7 @@
 import { Button, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import Text from "./Text";
+import Text from "./shared/Text";
 
 const Hero = () => {
     return (
