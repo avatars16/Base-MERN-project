@@ -147,7 +147,7 @@ const deleteUserProfile = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("User not found");
     }
-    const error = await User.deleteOne({ _id: req.user!._id });
+    await User.deleteOne({ _id: req.user!._id });
     res.cookie("jwt", "", { httpOnly: true, expires: new Date(0), sameSite: "strict" });
     res.status(200).send();
 });

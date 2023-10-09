@@ -4,16 +4,16 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware";
 import connectDB from "./config/db";
 import userRoutes from "./routes/userRoutes";
 import path from "path";
-import dotenv from "dotenv";
 import logger from "./logger/index";
+import dotenv from "dotenv";
+dotenv.config();
+
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception:", err);
     process.exit(1); // Exit the application with an error code (1).
 });
 
-dotenv.config();
 connectDB();
-
 const port = process.env.PORT || 5000;
 
 const app = express();

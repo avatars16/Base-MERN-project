@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert, Box } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { setCredentials } from "../slices/authSlice";
-import { useRegisterMutation, useLoginMutation } from "../slices/usersApiSlice";
+import { useAppDispatch, useAppSelector } from "../services/REDUX/hooks/reduxHooks";
+import { setCredentials } from "../services/REDUX/slices/authSlice";
+import { useRegisterMutation, useLoginMutation } from "../services/REDUX/slices/usersApiSlice";
 import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";

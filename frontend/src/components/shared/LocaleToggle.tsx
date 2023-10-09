@@ -1,7 +1,7 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { MUILocaleData, supportedLocales } from "../../theme/SupportedLocales";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { saveLocale } from "../../slices/localesSlice";
+import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
+import { saveLocale } from "../../services/REDUX/slices/localesSlice";
 import Text from "./Text";
 import "flag-icon-css/css/flag-icons.min.css";
 const LocaleToggle = () => {

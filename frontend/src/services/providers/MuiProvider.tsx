@@ -1,23 +1,23 @@
 // MUIWrapper.tsx file
 import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
 import { createContext, useEffect, useMemo, useState } from "react";
-import { getDesignTokens } from "../theme/theme";
+import { getDesignTokens } from "../../theme/theme";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppSelector } from "../REDUX/hooks/reduxHooks";
 import { useTranslation } from "react-i18next";
-import { retrieveDatePickerLocale, retrieveLocalization } from "../theme/SupportedLocales";
+import { retrieveDatePickerLocale, retrieveLocalization } from "../../theme/SupportedLocales";
 
-export const MUIWrapperContext = createContext({
+export const muiProviderContext = createContext({
     toggleColorMode: () => {},
 });
 
-export default function MUIWrapper({ children }: { children: React.ReactNode }) {
+export default function MuiProvider({ children }: { children: React.ReactNode }) {
     const { t } = useTranslation();
     const { locale } = useAppSelector((state) => state.locales);
     const [mode, setMode] = useState<PaletteMode>("light");
 
-    const muiWrapperUtils = useMemo(
+    const muiProviderUtils = useMemo(
         () => ({
             toggleColorMode: () => {
                 setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
@@ -41,13 +41,13 @@ export default function MUIWrapper({ children }: { children: React.ReactNode }) 
     }, [locale, t]);
 
     return (
-        <MUIWrapperContext.Provider
+        <muiProviderContext.Provider
             value={{
-                toggleColorMode: muiWrapperUtils.toggleColorMode,
+                toggleColorMode: muiProviderUtils.toggleColorMode,
             }}>
             <ThemeProvider theme={theme}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>{children}</LocalizationProvider>
             </ThemeProvider>
-        </MUIWrapperContext.Provider>
+        </muiProviderContext.Provider>
     );
 }

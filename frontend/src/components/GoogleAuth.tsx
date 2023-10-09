@@ -1,9 +1,9 @@
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import { useAuthGoogleMutation } from "../slices/usersApiSlice";
+import { useAuthGoogleMutation } from "../services/REDUX/slices/usersApiSlice";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../slices/authSlice";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import { setCredentials } from "../services/REDUX/slices/authSlice";
+import { useAppDispatch } from "../services/REDUX/hooks/reduxHooks";
 
 const GoogleAuth = () => {
     var clientId: string = "286829291882-d5m5frt1qd9m16pjv0lho10aii043bin.apps.googleusercontent.com";

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { useLogoutMutation } from "../../slices/usersApiSlice";
-import { logout } from "../../slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
+import { useLogoutMutation } from "../../services/REDUX/slices/usersApiSlice";
+import { logout } from "../../services/REDUX/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";

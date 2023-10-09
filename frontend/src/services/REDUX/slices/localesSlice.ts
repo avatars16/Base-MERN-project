@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import i18n from "i18next";
-import { supportedLocales, MUILocaleData } from "../theme/SupportedLocales";
+import { supportedLocales, MUILocaleData } from "../../../theme/SupportedLocales";
 
 const initialState: { locale: MUILocaleData } = {
     // ! necesarry to tell typescript that we are certain that localstorage cannot return null

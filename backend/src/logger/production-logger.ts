@@ -9,7 +9,7 @@ function buildProductionLogger() {
         defaultMeta: { service: "user-service" },
         transports: [
             new transports.DailyRotateFile({
-                filename: ".//logs/all-logs-%DATE%.log",
+                filename: "./logs/all-logs-%DATE%.log",
                 datePattern: "YYYY-MM",
                 maxSize: "20m",
                 level: "debug",

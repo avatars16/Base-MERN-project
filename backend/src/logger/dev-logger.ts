@@ -23,14 +23,14 @@ function buildDevLogger() {
                 level: "info",
             }),
             new transports.DailyRotateFile({
-                filename: "./backend/logs/all-logs-%DATE%.log",
+                filename: "./logs/all-logs-%DATE%.log",
                 datePattern: "YYYY-MM",
                 maxSize: "20m",
                 level: "debug",
                 format: combine(basicFormat, prettyPrint()),
             }),
             new transports.DailyRotateFile({
-                filename: "./backend/logs/info-%DATE%.log",
+                filename: "./logs/info-%DATE%.log",
                 datePattern: "YYYY-MM",
                 maxSize: "20m",
                 level: "info",

@@ -14,13 +14,40 @@ self.addEventListener("install", (event) => {
 
 //Listen for request
 self.addEventListener("fetch", (event) => {
-    event.respondWith(
-        caches.match(event.request).then(() => {
-            return fetch(event.request).catch((err) => {
-                return caches.match("offline.html");
-            });
-        })
-    );
+    const request = event.request;
+
+    // Cache-First Strategy for GET requests (Static assets)
+    if (request.method === "GET") {
+        event.respondWith(
+            caches.match(request).then((response) => {
+                if (response) {
+                    return response;
+                }
+
+                return fetch(request).then((response) => {
+                    if (!response || response.status !== 200 || response.type !== "basic") {
+                        return response;
+                    }
+
+                    const responseToCache = response.clone();
+
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(request, responseToCache);
+                    });
+
+                    return response;
+                });
+            })
+        );
+    } else {
+        // Handle other types of requests (e.g., POST, PUT, DELETE)
+        // You can customize this part based on your specific needs
+        event.respondWith(
+            fetch(event.request).then(function (networkResponse) {
+                return networkResponse;
+            })
+        );
+    }
 });
 //Activate the service worker
 self.addEventListener("activate", (event) => {
