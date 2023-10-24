@@ -12,7 +12,7 @@ const localesSlice = createSlice({
     initialState,
     reducers: {
         saveLocale: (state, action) => {
-            state.locale = retrieveMUILocale(action.payload);
+            state.locale = action.payload;
             i18n.changeLanguage(state.locale.dayJSLanguage);
             localStorage.setItem("locale", JSON.stringify(action.payload));
         },

@@ -6,14 +6,15 @@ import TranslateText from "./TranslateText";
 import "flag-icon-css/css/flag-icons.min.css";
 const LocaleToggle = () => {
     const { locale } = useAppSelector((state) => state.locales);
+    const retrievedLocaleValue = locale.dayJSLanguage;
     const dispatch = useAppDispatch();
     return (
         <>
             <Box sx={{ minWidth: 120, color: "inherit" }}>
                 <FormControl fullWidth>
-                    {/* <InputLabel id="demo-simple-select-label">
+                    <InputLabel id="demo-simple-select-label">
                         <TranslateText tKey="header.language" />
-                    </InputLabel> */}
+                    </InputLabel>
                     <Select
                         id="demo-simple-selectd"
                         value={locale}
@@ -24,11 +25,12 @@ const LocaleToggle = () => {
                             const data = event.target.value;
                             dispatch(saveLocale(data as MUILocaleData));
                         }}>
-                        {supportedLocales.map((item: MUILocaleData) => {
+                        {supportedLocales.map((item) => {
                             return (
+                                //@ts-ignore - type problem has todo with value.
                                 <MenuItem
                                     key={item.title}
-                                    value={item.dayJSLanguage}
+                                    value={item} //Should be changed to item.dayJSLanguage, but will never correspont with type in select
                                     autoFocus={item.dayJSLanguage === locale.dayJSLanguage}>
                                     <Box
                                         className={`flag-icon flag-icon-${item.countryCode}`}
