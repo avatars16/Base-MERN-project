@@ -8,7 +8,7 @@ import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { googleLogout } from "@react-oauth/google";
 import DarkModeToggle from "./DarkModeToggle";
-import Text from "./Text";
+import TranslateText from "./TranslateText";
 import LocaleToggle from "./LocaleToggle";
 
 const Header = () => {
@@ -49,7 +49,7 @@ const Header = () => {
                             component={Link}
                             to={"/"}
                             sx={{ textDecoration: "none", color: "inherit" }}>
-                            <Text tKey="header.title" />
+                            <TranslateText tKey="header.title" />
                         </Typography>
                     </Box>
                     <LocaleToggle />
@@ -57,24 +57,24 @@ const Header = () => {
                     {userInfo ? (
                         <>
                             <Button color="inherit" onClick={handleClick}>
-                                <Text tKey="header.hiUser" params={{ userName: userInfo.name }} />
+                                <TranslateText tKey="header.hiUser" params={{ userName: userInfo.name }} />
                             </Button>
                             <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
                                 <MenuItem component={Link} to="/profile">
                                     <ListItemIcon>
                                         <AccountCircle />
                                     </ListItemIcon>
-                                    <Text tKey="header.profile" />
+                                    <TranslateText tKey="header.profile" />
                                 </MenuItem>
                                 <Divider />
                                 <MenuItem onClick={logoutHandler}>
-                                    <Text tKey="header.logout" />
+                                    <TranslateText tKey="header.logout" />
                                 </MenuItem>
                             </Menu>
                         </>
                     ) : (
                         <Button component={Link} to="/login" color="inherit">
-                            <Text tKey="authPage.login" />
+                            <TranslateText tKey="authPage.login" />
                         </Button>
                     )}
                 </Toolbar>

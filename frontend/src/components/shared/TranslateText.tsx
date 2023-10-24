@@ -5,9 +5,9 @@ interface Props {
     params?: Object;
 }
 
-const Text = ({ tKey, params }: Props) => {
+const TranslateText = ({ tKey, params }: Props) => {
     const { t } = useTranslation();
     return <>{t(tKey, params)}</>;
 };
 
-export default Text;
+export default TranslateText;

@@ -2,7 +2,7 @@ import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } fro
 import { MUILocaleData, supportedLocales } from "../../theme/SupportedLocales";
 import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
 import { saveLocale } from "../../services/REDUX/slices/localesSlice";
-import Text from "./Text";
+import TranslateText from "./TranslateText";
 import "flag-icon-css/css/flag-icons.min.css";
 const LocaleToggle = () => {
     const { locale } = useAppSelector((state) => state.locales);
@@ -11,26 +11,24 @@ const LocaleToggle = () => {
         <>
             <Box sx={{ minWidth: 120, color: "inherit" }}>
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                        <Text tKey="header.language" />
-                    </InputLabel>
+                    {/* <InputLabel id="demo-simple-select-label">
+                        <TranslateText tKey="header.language" />
+                    </InputLabel> */}
                     <Select
-                        labelId="demo-simple-select-label"
                         id="demo-simple-selectd"
                         value={locale}
                         renderValue={(val) => val.title}
-                        label="Language"
-                        variant="filled"
+                        label="language"
+                        variant="standard"
                         onChange={(event: SelectChangeEvent<MUILocaleData>) => {
                             const data = event.target.value;
                             dispatch(saveLocale(data as MUILocaleData));
                         }}>
-                        {supportedLocales.map((item) => {
+                        {supportedLocales.map((item: MUILocaleData) => {
                             return (
-                                // @ts-ignore - necessary to load object into value
                                 <MenuItem
                                     key={item.title}
-                                    value={item}
+                                    value={item.dayJSLanguage}
                                     autoFocus={item.dayJSLanguage === locale.dayJSLanguage}>
                                     <Box
                                         className={`flag-icon flag-icon-${item.countryCode}`}

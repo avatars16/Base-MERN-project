@@ -61,4 +61,13 @@ export const retrieveDatePickerLocale = (dayJSLanguage: string) => {
     }
 };
 
+export const retrieveMUILocale = (dayJSLanguage: string) => {
+    switch (dayJSLanguage) {
+        case "nl":
+            return dutch;
+        default:
+            return english;
+    }
+};
+
 export const supportedLocales: MUILocaleData[] = [english, dutch, hebrew];
