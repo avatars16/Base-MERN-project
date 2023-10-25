@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import FormContainer from "../components/FormContainer";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { setCredentials, logout } from "../slices/authSlice";
-import { useUpdateUserMutation, useDeleteUserMutation } from "../slices/usersApiSlice";
+import FormContainer from "../components/forms/FormContainer";
+import { useAppDispatch, useAppSelector } from "../services/REDUX/hooks/reduxHooks";
+import { setCredentials, logout } from "../services/REDUX/slices/authSlice";
+import { useUpdateUserMutation, useDeleteUserMutation } from "../services/REDUX/slices/usersApiSlice";
 import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
