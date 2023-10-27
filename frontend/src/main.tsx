@@ -8,7 +8,7 @@ import HomeScreen from "./screens/HomeScreen.tsx";
 import AuthScreen from "./screens/AuthScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
-import MUIWrapper from "./services/providers/MuiProvider.tsx";
+import MUIWrapper from "./services/providers/Mui.provider.tsx";
 import "./services/i18n/config.ts";
 import ReduxProvider from "./services/REDUX/ReduxProvider.tsx";
 

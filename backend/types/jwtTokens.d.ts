@@ -1,5 +1,2 @@
-// typings/userId.d.ts
-
-import { ObjectId } from "mongoose";
-
-export type jwtUserToken = { userId: ObjectId };
+import { DataTypes } from "sequelize";
+export type jwtUserToken = { userId: DataTypes.INTEGER };

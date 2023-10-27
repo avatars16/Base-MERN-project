@@ -1,11 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { notFound, errorHandler } from "./middleware/errorMiddleware";
-import connectDB from "./config/db";
-import userRoutes from "./routes/userRoutes";
+import { notFound, errorHandler } from "./middleware/error.middleware";
+import userRoutes from "./routes/user.route";
 import path from "path";
 import logger from "./logger/index";
 import dotenv from "dotenv";
+import { sequelize } from "./config/sequilize.config";
 dotenv.config();
 
 process.on("uncaughtException", (err) => {
@@ -13,7 +13,6 @@ process.on("uncaughtException", (err) => {
     process.exit(1); // Exit the application with an error code (1).
 });
 
-connectDB();
 const port = process.env.PORT || 5000;
 
 const app = express();

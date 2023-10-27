@@ -2,7 +2,7 @@ import React from "react";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Box, IconButton, useTheme } from "@mui/material";
-import { muiProviderContext } from "../../services/providers/MuiProvider";
+import { muiProviderContext } from "../../services/providers/Mui.provider";
 import "flag-icon-css/css/flag-icons.min.css";
 const DarkModeToggle = () => {
     const theme = useTheme();

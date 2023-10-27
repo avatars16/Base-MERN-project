@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ValidationError from "../errors/validationError";
+import ValidationError from "../errors/validation-error";
 import { Request, Response, NextFunction } from "express";
 import logger from "../logger";
 
@@ -21,8 +21,11 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
 
     res.status(statusCode).json({
         success: false,
-        message,
-        stack: process.env.NODE_ENV === `production` ? null : err.stack,
+        error: {
+            code: statusCode,
+            message: message,
+            stack: process.env.NODE_ENV === `production` ? null : err.stack,
+        },
     });
 };
 

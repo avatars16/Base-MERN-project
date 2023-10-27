@@ -9,6 +9,7 @@ import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
 import TranslateText from "../components/shared/TranslateText";
 import PasswordInput from "../components/inputs/PasswordInput";
+import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
 
 interface Props {
     isSignUp: Boolean;
@@ -21,7 +22,9 @@ const AuthScreen = ({ isSignUp }: Props) => {
         password: "",
         confirmPassword: "",
     });
+
     const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -41,24 +44,25 @@ const AuthScreen = ({ isSignUp }: Props) => {
     };
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (isSignUp && formData.password !== formData.confirmPassword)
-            try {
-                if (isSignUp) {
-                    const res = await register({
-                        name: formData.name,
-                        email: formData.email,
-                        password: formData.password,
-                    }).unwrap();
-
-                    dispatch(setCredentials({ ...res }));
-                } else {
-                    const res = await login({ ...formData }).unwrap();
-                    dispatch(setCredentials({ ...res }));
-                }
-                navigate("/");
-            } catch (err: any) {
-                setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
+        try {
+            if (isSignUp) {
+                const res = await register({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                }).unwrap();
+                dispatch(setCredentials({ ...res }));
+            } else {
+                const res = await login({ ...formData }).unwrap();
+                dispatch(setCredentials({ ...res }));
             }
+            navigate("/");
+        } catch (err: any) {
+            if (err?.data?.error?.success) return;
+            if (err?.data?.error?.fields.lenth != 0)
+                setFieldErrors(err?.data?.error?.fields as FieldErrors); //just to retrigger a render
+            else setFormFeedback({ open: true, errorMessage: err?.data?.error?.message || err.error });
+        }
     };
 
     return (
@@ -81,6 +85,8 @@ const AuthScreen = ({ isSignUp }: Props) => {
                         margin="normal"
                         fullWidth
                         required={!!isSignUp}
+                        error={hasError(fieldErrors, "name")}
+                        helperText={getHelperText(fieldErrors, "name")}
                     />
                 )}
 
@@ -95,6 +101,8 @@ const AuthScreen = ({ isSignUp }: Props) => {
                     margin="normal"
                     fullWidth
                     required
+                    error={hasError(fieldErrors, "email")}
+                    helperText={getHelperText(fieldErrors, "email")}
                 />
 
                 <PasswordInput
@@ -103,6 +111,8 @@ const AuthScreen = ({ isSignUp }: Props) => {
                     value={formData.password}
                     onChange={handleInputChange}
                     changeVisibility={true}
+                    error={hasError(fieldErrors, "password")}
+                    helperText={getHelperText(fieldErrors, "password")}
                 />
                 {isSignUp && (
                     <PasswordInput
@@ -111,6 +121,8 @@ const AuthScreen = ({ isSignUp }: Props) => {
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
                         changeVisibility={false}
+                        error={formData.password !== formData.confirmPassword && formData.confirmPassword.length > 1}
+                        helperText="Password do not match"
                     />
                 )}
 

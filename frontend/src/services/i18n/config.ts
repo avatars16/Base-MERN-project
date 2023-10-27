@@ -8,7 +8,7 @@ export default i18next
     .use(LanguageDetector)
     .use(HttpApi)
     .init({
-        fallbackLng: "en",
+        fallbackLng: "nl",
         detection: {
             order: [
                 "querystring",
