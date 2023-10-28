@@ -21,7 +21,7 @@ export default class User extends Model {
 
     @BeforeSave
     static async hashPassword(user: User): Promise<void> {
-        if (!user.password && user.googleId) {
+        if (!user.password && !user.googleId) {
             throw new Error("Either password or googleId must be present");
         }
         if (!user.password || !user.changed("password")) return;

@@ -5,9 +5,11 @@ import jwt from "jsonwebtoken";
 import ValidationError from "../errors/validation-error";
 import { TokenPayload } from "google-auth-library";
 
-// @desc Auth user/set token
-// route POST /api/users/auth
-// @access Public
+/**
+ * @route POST /api/users/auth
+ * @access Public
+ * @param {email:string,password:string} req.body
+ */
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
@@ -23,11 +25,14 @@ const authUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Auth user/set token
-// route POST /api/users/auth/google
-// @access Public
+/**
+ * @route POST /api/users/auth/google
+ * @access Public
+ * @param {credential: TokenPayload,clientId:string, select_by} req.body
+ */
 const googleAuthUser = asyncHandler(async (req, res) => {
     const { credential, clientId, select_by } = req.body;
+    console.log(typeof select_by);
     const decodedToken = jwt.decode(credential) as TokenPayload;
     if (
         decodedToken.aud !== process.env.GOOGLE_CLIENT_ID ||
@@ -37,43 +42,32 @@ const googleAuthUser = asyncHandler(async (req, res) => {
     ) {
         throw new Error("Something went wrong");
     }
-    const user = await User.findOne({ where: { email: decodedToken.email } });
-    if (user && user.googleId === undefined) {
-        user.googleId = decodedToken.sub;
-        await user.save();
-        generateToken(res, user.id);
-        res.status(201).json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-        });
+    const retrievedUser = await User.findOne({ where: { email: decodedToken.email } });
+    if (retrievedUser !== null && retrievedUser.googleId === undefined) {
+        retrievedUser.googleId = decodedToken.sub;
+        await retrievedUser.save();
     }
-    if (user !== null && user.googleId === decodedToken.sub) {
-        generateToken(res, user.id);
-        res.status(201).json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
+    var user;
+    if (retrievedUser == null) {
+        user = await User.create({
+            name: decodedToken.name,
+            email: decodedToken.email,
+            googleId: decodedToken.sub,
         });
-    }
-    const newUser = await User.create({
-        name: decodedToken.name,
-        email: decodedToken.email,
-        googleId: decodedToken.sub,
+    } else user = retrievedUser;
+    generateToken(res, user.id);
+    res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
     });
-    if (newUser) {
-        generateToken(res, newUser.id);
-        res.status(201).json({
-            _id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-        });
-    } else throw new ValidationError("Invalid user data");
 });
 
-// @desc Register a new user
-// route POST /api/users
-// @access Public
+/**
+ * @route POST /api/users
+ * @access Public
+ * @param {user:User} req.body
+ */
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const userExists = await User.findOne({ where: { email } });
@@ -98,17 +92,19 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc LogoutUser
-// route POST /api/users/logout
-// @access Public
+/**
+ * @route POST /api/users/logout
+ * @access Public
+ */
 const logoutUser = asyncHandler(async (req, res) => {
     res.cookie("jwt", "", { httpOnly: true, expires: new Date(0), sameSite: "strict" });
     res.status(200).json({ message: `User Logged out` });
 });
 
-// @desc Get user profile
-// route Get /api/users/profile
-// @access Private
+/**
+ * @route GET /api/users/profile
+ * @access Private
+ */
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = {
         _id: req.user!.id,
@@ -118,9 +114,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({ user });
 });
 
-// @desc Update user profile
-// route PUT /api/users/profile
-// @access Private
+/**
+ * @route PUT /api/users/profile
+ * @access Private
+ * @param { user:User} req.body
+ */
 const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.user === undefined) throw new Error("No user in request");
     const user = await User.findByPk(req.user.id);
@@ -137,9 +135,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({ _id: req.user.id, name: updatedUser.name, email: updatedUser.email });
 });
 
-// @desc Update user profile
-// route DELETE /api/users/profile
-// @access Private
+/**
+ * @route DELETE /api/users/profile
+ * @access Private
+ */
 const deleteUserProfile = asyncHandler(async (req, res) => {
     if (req.user === undefined) throw new Error("No user in request");
     const user = await User.findByPk(req.user!.id);

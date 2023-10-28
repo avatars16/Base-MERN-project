@@ -2,12 +2,7 @@
 
 import { Direction } from "@mui/material";
 import { nlNL as datePickerLocaleDutch, enUS as datePickerLocaleEnglish } from "@mui/x-date-pickers";
-import {
-    nlNL as materialLocaleDutch,
-    enUS as materialLocaleEnglish,
-    heIL as materialLocaleHebrew,
-    Localization,
-} from "@mui/material/locale";
+import { nlNL as materialLocaleDutch, enUS as materialLocaleEnglish, Localization } from "@mui/material/locale";
 
 import "dayjs/locale/en";
 import "dayjs/locale/nl";
@@ -22,7 +17,7 @@ export interface MUILocaleData {
 const dutch: MUILocaleData = {
     dayJSLanguage: "nl",
     countryCode: "nl",
-    title: "Dutch",
+    title: "Nederlands",
     direction: "ltr",
 };
 
@@ -33,41 +28,40 @@ const english: MUILocaleData = {
     direction: "ltr",
 };
 
-// RTL language
-const hebrew: MUILocaleData = {
-    dayJSLanguage: "he",
-    countryCode: "il",
-    title: "Hebrew",
-    direction: "rtl",
-};
+// // RTL language
+// Example of right to left language
+// const hebrew: MUILocaleData = {
+//     dayJSLanguage: "he",
+//     countryCode: "il",
+//     title: "Hebrew",
+//     direction: "rtl",
+// };
 
 export const retrieveLocalization = (dayJSLanguage: string): Localization => {
     switch (dayJSLanguage) {
-        case "nl":
-            return materialLocaleDutch;
-        case "he":
-            return materialLocaleHebrew;
-        default:
+        case "en":
             return materialLocaleEnglish;
+        default:
+            return materialLocaleDutch;
     }
 };
 
 export const retrieveDatePickerLocale = (dayJSLanguage: string) => {
     switch (dayJSLanguage) {
-        case "nl":
-            return datePickerLocaleDutch;
-        default:
+        case "en":
             return datePickerLocaleEnglish;
+        default:
+            return datePickerLocaleDutch;
     }
 };
 
 export const retrieveMUILocale = (dayJSLanguage: string) => {
     switch (dayJSLanguage) {
-        case "nl":
-            return dutch;
-        default:
+        case "en":
             return english;
+        default:
+            return dutch;
     }
 };
 
-export const supportedLocales: MUILocaleData[] = [english, dutch, hebrew];
+export const supportedLocales: MUILocaleData[] = [english, dutch];

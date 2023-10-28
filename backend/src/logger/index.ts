@@ -11,6 +11,7 @@ if (process.env.NODE_ENV == "production") {
 } else {
     logger = buildDevLogger();
 }
+
 logger.info("environment is: " + process.env.NODE_ENV);
 
 export default logger;

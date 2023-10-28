@@ -6,6 +6,8 @@ import path from "path";
 import logger from "./logger/index";
 import dotenv from "dotenv";
 import { sequelize } from "./config/sequilize.config";
+import useragent from "express-useragent";
+import morgan from "morgan";
 dotenv.config();
 
 process.on("uncaughtException", (err) => {
@@ -17,9 +19,11 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies etc we need to trust this proxy
+app.use(morgan("combined", { stream: { write: (message) => logger.info(message) } }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(useragent.express());
 app.use("/api/users/", userRoutes);
 
 if (process.env.NODE_ENV === "production") {
@@ -33,6 +37,8 @@ if (process.env.NODE_ENV === "production") {
         res.send("Server is ready!");
     });
 }
+
+//Error handlers
 app.use(notFound);
 app.use(errorHandler);
 app.listen(port, () => {

@@ -8,9 +8,8 @@ import HomeScreen from "./screens/HomeScreen.tsx";
 import AuthScreen from "./screens/AuthScreen.tsx";
 import ProfileScreen from "./screens/ProfileScreen.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
-import MUIWrapper from "./services/providers/Mui.provider.tsx";
 import "./services/i18n/config.ts";
-import ReduxProvider from "./services/REDUX/ReduxProvider.tsx";
+import ProvidersWrapper from "./services/providers/providers-wrapper.provider.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,10 +28,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <ReduxProvider>
-            <MUIWrapper>
-                <RouterProvider router={router} />
-            </MUIWrapper>
-        </ReduxProvider>
+        <ProvidersWrapper>
+            <RouterProvider router={router} />
+        </ProvidersWrapper>
     </React.StrictMode>
 );

@@ -9,7 +9,7 @@ const validatorHandler = expressAsyncHandler((req, res, next) => {
         // @ts-ignore - error.path does not exists according to ts, but it does.
         return { name: error.path, message: error.msg };
     });
-    throw new ValidationError("Validation error", formatedError);
+    throw new ValidationError("Express validation error", formatedError);
 });
 
 export default validatorHandler;

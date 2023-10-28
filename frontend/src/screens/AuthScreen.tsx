@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, TextField, Typography, Snackbar, Alert, Box } from "@mui/material";
+import { Button, TextField, Typography, Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../services/REDUX/hooks/reduxHooks";
 import { setCredentials } from "../services/REDUX/slices/authSlice";
 import { useRegisterMutation, useLoginMutation } from "../services/REDUX/slices/usersApiSlice";
@@ -10,6 +10,7 @@ import GoogleAuth from "../components/GoogleAuth";
 import TranslateText from "../components/shared/TranslateText";
 import PasswordInput from "../components/inputs/PasswordInput";
 import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
+import { snackbarContext } from "../services/providers/Snackbar.provider";
 
 interface Props {
     isSignUp: Boolean;
@@ -23,7 +24,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
         confirmPassword: "",
     });
 
-    const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+    const { setSnackbarContext } = useContext(snackbarContext);
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
 
     const navigate = useNavigate();
@@ -59,9 +60,8 @@ const AuthScreen = ({ isSignUp }: Props) => {
             navigate("/");
         } catch (err: any) {
             if (err?.data?.error?.success) return;
-            if (err?.data?.error?.fields.lenth != 0)
-                setFieldErrors(err?.data?.error?.fields as FieldErrors); //just to retrigger a render
-            else setFormFeedback({ open: true, errorMessage: err?.data?.error?.message || err.error });
+            if (err?.data?.error?.fields.length != 0) setFieldErrors(err?.data?.error?.fields as FieldErrors);
+            setSnackbarContext({ open: true, severity: "error", message: err?.data?.error?.message || err.error });
         }
     };
 
@@ -165,9 +165,6 @@ const AuthScreen = ({ isSignUp }: Props) => {
                     </Typography>
                 </Box>
             </form>
-            <Snackbar open={formFeedback.open} autoHideDuration={6000}>
-                <Alert severity="error">{formFeedback.errorMessage}</Alert>
-            </Snackbar>
         </FormContainer>
     );
 };

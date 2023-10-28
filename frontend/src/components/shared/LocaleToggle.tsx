@@ -1,12 +1,11 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { MUILocaleData, supportedLocales } from "../../theme/SupportedLocales";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { retrieveMUILocale, supportedLocales } from "../../theme/SupportedLocales";
 import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
 import { saveLocale } from "../../services/REDUX/slices/localesSlice";
 import TranslateText from "./TranslateText";
 import "flag-icon-css/css/flag-icons.min.css";
 const LocaleToggle = () => {
     const { locale } = useAppSelector((state) => state.locales);
-    const retrievedLocaleValue = locale.dayJSLanguage;
     const dispatch = useAppDispatch();
     return (
         <>
@@ -16,21 +15,21 @@ const LocaleToggle = () => {
                         <TranslateText tKey="header.language" />
                     </InputLabel>
                     <Select
-                        id="demo-simple-selectd"
-                        value={locale}
-                        renderValue={(val) => val.title}
+                        id="demo-simple-select"
+                        value={locale.dayJSLanguage}
                         label="language"
                         variant="standard"
-                        onChange={(event: SelectChangeEvent<MUILocaleData>) => {
+                        onChange={(event) => {
                             const data = event.target.value;
-                            dispatch(saveLocale(data as MUILocaleData));
-                        }}>
+                            dispatch(saveLocale(retrieveMUILocale(data)));
+                        }}
+                        renderValue={(val) => retrieveMUILocale(val).title}>
                         {supportedLocales.map((item) => {
                             return (
                                 //@ts-ignore - type problem has todo with value.
                                 <MenuItem
                                     key={item.title}
-                                    value={item} //Should be changed to item.dayJSLanguage, but will never correspont with type in select
+                                    value={item.dayJSLanguage} //Should be changed to item.dayJSLanguage, but will never correspont with type in select
                                     autoFocus={item.dayJSLanguage === locale.dayJSLanguage}>
                                     <Box
                                         className={`flag-icon flag-icon-${item.countryCode}`}
