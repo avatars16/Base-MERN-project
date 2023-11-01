@@ -1,29 +1,26 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { notFound, errorHandler } from "./middleware/error.middleware";
-import userRoutes from "./routes/user.route";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 import path from "path";
-import logger from "./logger/index";
 import dotenv from "dotenv";
-import { sequelize } from "./config/sequilize.config";
-import useragent from "express-useragent";
-import morgan from "morgan";
-dotenv.config();
-
+import logger from "./logger/index.js";
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception:", err);
     process.exit(1); // Exit the application with an error code (1).
 });
 
+dotenv.config();
+connectDB();
+
 const port = process.env.PORT || 5000;
 
 const app = express();
 app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies etc we need to trust this proxy
-app.use(morgan("combined", { stream: { write: (message) => logger.http(message) } }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(useragent.express());
 app.use("/api/users/", userRoutes);
 
 if (process.env.NODE_ENV === "production") {
@@ -37,8 +34,6 @@ if (process.env.NODE_ENV === "production") {
         res.send("Server is ready!");
     });
 }
-
-//Error handlers
 app.use(notFound);
 app.use(errorHandler);
 app.listen(port, () => {
