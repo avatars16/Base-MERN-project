@@ -8,6 +8,9 @@ import { useAppSelector } from "../REDUX/hooks/reduxHooks";
 import { useTranslation } from "react-i18next";
 import { retrieveDatePickerLocale, retrieveLocalization } from "../../theme/SupportedLocales";
 
+//Inspired by: https://medium.com/@itayperry91/react-and-mui-change-muis-theme-mode-direction-and-language-including-date-pickers-ad8e91af30ae
+//Changed it to work with REDUX ~Bart E
+
 export const muiProviderContext = createContext({
     toggleColorMode: () => {},
 });

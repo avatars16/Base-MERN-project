@@ -5,32 +5,47 @@ import userRoutes from "./routes/user.route";
 import path from "path";
 import logger from "./logger/index";
 import dotenv from "dotenv";
-import { sequelize } from "./config/sequilize.config";
+import { sequelize } from "./config/sequilize.config"; //Import ensures sequilize will be loaded
 import useragent from "express-useragent";
 import morgan from "morgan";
-dotenv.config();
+import helmet from "helmet";
+import cors from "cors";
 
+const port = process.env.PORT || 5000;
+
+//Error handler
 process.on("uncaughtException", (err) => {
     logger.error("Uncaught Exception:", err);
     process.exit(1); // Exit the application with an error code (1).
 });
 
-const port = process.env.PORT || 5000;
-
+//App config
+dotenv.config();
 const app = express();
+
+//Security stuff
 app.set("trust proxy", 1); //Nginx proxy is a http request, for secure cookies etc we need to trust this proxy
+app.use(helmet()); //Set secure http headers, more info: https://blog.logrocket.com/using-helmet-node-js-secure-application/
+// app.use(cors({origin:http(s)://sub.domain.com:80})); //Cross-Origin Resource Sharing, use options to set specific origins to access backend;
+
+//Logs all HTTP requests
 app.use(morgan("combined", { stream: { write: (message) => logger.http(message) } }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
+//Parse the raw request and turn it into usable properties
 app.use(cookieParser());
-app.use(useragent.express());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(useragent.express()); //Required for contextData
+
+//Api Routes
 app.use("/api/users/", userRoutes);
 
+//Serving dist files when in production
 if (process.env.NODE_ENV === "production") {
     const __dirname = path.resolve();
-    app.use(express.static(path.join(__dirname, "frontend/dist")));
+    app.use(express.static(path.resolve(__dirname, "..", "frontend/dist")));
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+        res.sendFile(path.resolve(__dirname, "../", "frontend", "dist", "index.html"));
     });
 } else {
     app.get("/", (req, res) => {

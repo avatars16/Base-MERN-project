@@ -1,4 +1,4 @@
-import Header from "./components/shared/Header";
+import Header from "./components/Layout/Header";
 import InstallPwaPrompt from "./components/InstallPwaPrompt";
 import { Outlet } from "react-router-dom";
 import { CssBaseline, Container } from "@mui/material";

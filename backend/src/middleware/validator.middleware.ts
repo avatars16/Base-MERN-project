@@ -2,6 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 import { validationResult } from "express-validator";
 import ValidationError from "../errors/validation-error";
 
+//Documentation: https://express-validator.github.io/docs/guides/getting-started#handling-validation-errors
 const validatorHandler = expressAsyncHandler((req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) return next();

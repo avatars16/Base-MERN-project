@@ -5,9 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { googleLogout } from "@react-oauth/google";
-import DarkModeToggle from "./DarkModeToggle";
-import TranslateText from "./TranslateText";
-import LocaleToggle from "./LocaleToggle";
+import DarkModeToggle from "../shared/DarkModeToggle";
+import TranslateText from "../shared/TranslateText";
+import LocaleToggle from "../shared/LocaleToggle";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 const Header = () => {

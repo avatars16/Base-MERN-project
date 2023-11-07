@@ -1,5 +1,7 @@
 import { Direction, PaletteMode } from "@mui/material";
 
+//Tutorial: https://medium.com/@itayperry91/react-and-mui-change-muis-theme-mode-direction-and-language-including-date-pickers-ad8e91af30ae
+
 export const getDesignTokens = (mode: PaletteMode, direction: Direction) => ({
     palette: {
         mode,

@@ -2,6 +2,7 @@ import { Request } from "express";
 import geoip from "geoip-lite";
 import requestIp from "request-ip";
 
+//Copied from SocialEcho: https://github.com/nz-m/SocialEcho/blob/main/server/utils/contextData.js
 const getCurrentContextData = (req: Request) => {
     const ip = requestIp.getClientIp(req);
     const location = ip ? geoip.lookup(ip) : null;

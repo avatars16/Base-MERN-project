@@ -1,6 +1,9 @@
 import { check } from "express-validator";
 import User from "../../models/user.model";
 
+//Validations list: https://github.com/validatorjs/validator.js
+//Inspiration: SocialEcho: https://github.com/nz-m/SocialEcho/blob/main/server/middlewares/users/usersValidator.js
+//Yt tutorial: https://www.youtube.com/watch?v=WvwMAJU1bd4
 const addUserValidator = [
     check("name")
         .isLength({ min: 1 })

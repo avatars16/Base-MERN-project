@@ -24,12 +24,12 @@ export const publicRoutes = [
         element: <HomeScreen />,
     },
     {
-        path: "/signup",
-        element: <AuthScreen isSignUp={false} />,
+        path: "/register",
+        element: <AuthScreen isSignUp={true} />,
     },
     {
-        path: "/signin",
-        element: <AuthScreen isSignUp={true} />,
+        path: "/login",
+        element: <AuthScreen isSignUp={false} />,
     },
     {
         path: "*",

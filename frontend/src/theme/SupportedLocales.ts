@@ -1,11 +1,11 @@
-// SupportedLocales.ts
-
 import { Direction } from "@mui/material";
 import { nlNL as datePickerLocaleDutch, enUS as datePickerLocaleEnglish } from "@mui/x-date-pickers";
 import { nlNL as materialLocaleDutch, enUS as materialLocaleEnglish, Localization } from "@mui/material/locale";
 
 import "dayjs/locale/en";
 import "dayjs/locale/nl";
+
+//Inspired by: https://medium.com/@itayperry91/react-and-mui-change-muis-theme-mode-direction-and-language-including-date-pickers-ad8e91af30ae
 
 export interface MUILocaleData {
     dayJSLanguage: string;
