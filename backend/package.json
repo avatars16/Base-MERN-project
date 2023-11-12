@@ -6,7 +6,13 @@
     "scripts": {
         "dev": "nodemon src/server.ts",
         "production": "node dist/server.js",
-        "build": "tsc -p ."
+        "build": "tsc -p .",
+        "migration:generate": "npx sequelize-cli migration:generate",
+        "migrate": "env-cmd npx sequelize-cli db:migrate",
+        "migrate:rollback": "env-cmd npx sequelize-cli db:migrate:undo",
+        "seed:generate": "npx sequelize-cli seed:generate --name demo-user",
+        "seed": "npx sequelize-cli db:seed:all",
+        "seed:undo": "npx sequelize-cli db:seed:undo"
     },
     "keywords": [],
     "author": "",
@@ -16,6 +22,7 @@
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
+        "env-cmd": "^10.1.0",
         "express": "^4.18.2",
         "express-async-handler": "^1.2.0",
         "express-rate-limit": "^7.1.3",
@@ -36,6 +43,7 @@
         "winston-daily-rotate-file": "^4.7.1"
     },
     "devDependencies": {
+        "@faker-js/faker": "^8.2.0",
         "@tsconfig/node-lts": "^18.12.5",
         "@types/bcryptjs": "^2.4.4",
         "@types/cookie-parser": "^1.4.4",
@@ -51,6 +59,7 @@
         "@types/sequelize": "^4.28.17",
         "@types/validator": "^13.11.5",
         "nodemon": "^3.0.1",
+        "sequelize-cli": "^6.6.2",
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2"
     }

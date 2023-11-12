@@ -26,6 +26,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
 
     const { setSnackbarContext } = useContext(snackbarContext);
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
+    const [error, setError] = useState<String | null>();
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -60,8 +61,10 @@ const AuthScreen = ({ isSignUp }: Props) => {
             navigate("/");
         } catch (err: any) {
             if (err?.data?.error?.success) return;
-            if (err?.data?.error?.fields.length != 0) setFieldErrors(err?.data?.error?.fields as FieldErrors);
-            setSnackbarContext({ open: true, severity: "error", message: err?.data?.error?.message || err.error });
+            setFieldErrors(err?.data?.error?.fields as FieldErrors);
+            if (err?.data?.error?.fields.length == 0) setError(err?.data?.error?.message);
+            else setError("");
+            //setSnackbarContext({ open: true, severity: "error", message: err?.data?.error?.message || err.error });
         }
     };
 
@@ -69,6 +72,9 @@ const AuthScreen = ({ isSignUp }: Props) => {
         <FormContainer>
             <Typography variant="h4" sx={{ mb: 2 }}>
                 {isSignUp ? <TranslateText tKey="authPage.register" /> : <TranslateText tKey="authPage.login" />}
+            </Typography>
+            <Typography variant="body2" color="red">
+                {error ? error : ""}
             </Typography>
             <form
                 onSubmit={(e) => {
@@ -122,7 +128,11 @@ const AuthScreen = ({ isSignUp }: Props) => {
                         onChange={handleInputChange}
                         changeVisibility={false}
                         error={formData.password !== formData.confirmPassword && formData.confirmPassword.length > 1}
-                        helperText="Password do not match"
+                        helperText={
+                            formData.password !== formData.confirmPassword && formData.confirmPassword.length > 1
+                                ? "Password do not match"
+                                : ""
+                        }
                     />
                 )}
 

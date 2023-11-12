@@ -23,13 +23,4 @@ sequelize
         logger.error(JSON.stringify(err));
     });
 
-sequelize
-    .sync({ alter: process.env.NODE_ENV === "development" })
-    .then((res) => {
-        logger.info("Sequilize synced models");
-    })
-    .catch((err) => {
-        logger.error("Sequilize couldn't sync models with database", err);
-    });
-
 export { sequelize };

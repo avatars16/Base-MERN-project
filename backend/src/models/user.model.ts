@@ -1,11 +1,12 @@
-import { Table, Column, Model, IsEmail, Unique, BeforeSave } from "sequelize-typescript";
-import { sequelize } from "../config/sequilize.config";
+import { Table, Column, Model, IsEmail, Unique, BeforeSave, Length } from "sequelize-typescript";
+import { sequelize } from "../config/sequilize";
 import bcrypt from "bcryptjs";
 
 //Used this site for typescript notation: https://www.npmjs.com/package/sequelize-typescript
 //Used this for hooks(beforeSave): https://sequelize.org/docs/v6/other-topics/hook
 @Table
 export default class User extends Model {
+    @Length({ min: 3 })
     @Column
     declare name: string;
 

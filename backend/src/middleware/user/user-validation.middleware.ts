@@ -46,9 +46,10 @@ const addUserValidator = [
             if (!lowercaseRegex.test(value)) throw new Error("Password should include a lower case letter");
             const numberRegex = /[0-9]/;
             if (!numberRegex.test(value)) throw new Error("Password should include a number");
-            const specialCharsRegex = /!@#$%^&*-_=;,.?\/\\|~`"'(){}\[\]<>/;
+            const specialCharsRegex = /[!@#$%^&*-_=;,.?\/\\|~`"'(){}\[\]<>]/;
             if (!specialCharsRegex.test(value))
                 throw new Error("Password should one of the following chars" + specialCharsRegex);
+            return true;
         }),
 ];
 

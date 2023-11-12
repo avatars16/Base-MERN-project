@@ -2,10 +2,11 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import { notFound, errorHandler } from "./middleware/error.middleware";
 import userRoutes from "./routes/user.route";
+import databaseRoutes from "./routes/database.route";
 import path from "path";
 import logger from "./logger/index";
 import dotenv from "dotenv";
-import { sequelize } from "./config/sequilize.config"; //Import ensures sequilize will be loaded
+import { sequelize } from "./config/sequilize"; //Import ensures sequilize will be loaded
 import useragent from "express-useragent";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(useragent.express()); //Required for contextData
 
 //Api Routes
+app.use("/database/", databaseRoutes);
 app.use("/api/users/", userRoutes);
 
 //Serving dist files when in production
