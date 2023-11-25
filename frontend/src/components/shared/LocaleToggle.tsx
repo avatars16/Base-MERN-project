@@ -1,12 +1,11 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { retrieveMUILocale, supportedLocales } from "../../theme/SupportedLocales";
-import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
-import { saveLocale } from "../../services/REDUX/slices/localesSlice";
 import TranslateText from "./TranslateText";
 import "flag-icon-css/css/flag-icons.min.css";
+import { useContext } from "react";
+import { muiProviderContext } from "../../services/providers/Mui.provider";
 const LocaleToggle = () => {
-    const { locale } = useAppSelector((state) => state.locales);
-    const dispatch = useAppDispatch();
+    const { locale, setLocale } = useContext(muiProviderContext);
     return (
         <>
             <Box sx={{ minWidth: 120, color: "inherit" }}>
@@ -21,7 +20,7 @@ const LocaleToggle = () => {
                         variant="standard"
                         onChange={(event) => {
                             const data = event.target.value;
-                            dispatch(saveLocale(retrieveMUILocale(data)));
+                            setLocale(retrieveMUILocale(data));
                         }}
                         renderValue={(val) => retrieveMUILocale(val).title}>
                         {supportedLocales.map((item) => {

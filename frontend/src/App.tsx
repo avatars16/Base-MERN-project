@@ -3,6 +3,7 @@ import InstallPwaPrompt from "./components/InstallPwaPrompt";
 import { Outlet } from "react-router-dom";
 import { CssBaseline, Container } from "@mui/material";
 import CheckLocaleChange from "./components/CheckLocale";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                     <Outlet /> {/* Puts the element passed in the router inside of this element */}
                     <CheckLocaleChange />
                 </Container>
+                <ReactQueryDevtools />
             </main>
             <InstallPwaPrompt />
         </>

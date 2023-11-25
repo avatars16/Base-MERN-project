@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/forms/FormContainer";
-import { useAppDispatch, useAppSelector } from "../services/REDUX/hooks/reduxHooks";
-import { setCredentials, logout } from "../services/REDUX/slices/authSlice";
-import { useUpdateUserMutation, useDeleteUserMutation } from "../services/REDUX/slices/usersApiSlice";
 import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
+import useAuth from "../hooks/useAuth";
 
 const ProfileScreen = () => {
+    const { userInfo, update, deleteUser } = useAuth();
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -44,26 +44,18 @@ const ProfileScreen = () => {
     };
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const [register, { isLoading }] = useUpdateUserMutation();
-    const [deleteUser] = useDeleteUserMutation();
-    const { userInfo } = useAppSelector((state) => state.auth);
+
     useEffect(() => {
-        setFormData((prevFormData) => ({ ...prevFormData, name: userInfo.name }));
-        setFormData((prevFormData) => ({ ...prevFormData, email: userInfo.email }));
-    }, [userInfo.setName, userInfo.setEmail]);
+        console.log(userInfo, "hierzo!");
+        setFormData((prevFormData) => ({ ...prevFormData, name: userInfo!.name }));
+        setFormData((prevFormData) => ({ ...prevFormData, email: userInfo!.email }));
+    }, [userInfo]);
 
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) return setPasswordMatch(false);
         try {
-            const res = await register({
-                _id: userInfo._id,
-                name: formData.name,
-                email: formData.email,
-                password: formData.password,
-            }).unwrap();
-            dispatch(setCredentials({ ...res }));
+            const res = await update.mutateAsync(formData);
             navigate("/");
         } catch (err: any) {
             setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
@@ -74,10 +66,7 @@ const ProfileScreen = () => {
         e.preventDefault();
         if (!confirm("Are you sure you want to delete your account?")) return;
         try {
-            await deleteUser({
-                _id: userInfo._id,
-            }).unwrap();
-            dispatch(logout());
+            await deleteUser.mutateAsync();
             navigate("/");
         } catch (err: any) {
             setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
@@ -162,14 +151,14 @@ const ProfileScreen = () => {
                         <Button
                             variant="contained"
                             color="error"
-                            disabled={isLoading}
+                            disabled={deleteUser.isPending}
                             onClick={deleteUserHandler}
                             fullWidth>
                             Delete account
                         </Button>
                     </Grid>
                     <Grid xs={12} sm={6}>
-                        <Button type="submit" variant="contained" color="primary" disabled={isLoading} fullWidth>
+                        <Button type="submit" variant="contained" color="primary" disabled={update.isPending} fullWidth>
                             Update Profile
                         </Button>
                     </Grid>

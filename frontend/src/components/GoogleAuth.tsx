@@ -1,31 +1,34 @@
 import { CredentialResponse, GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import { useAuthGoogleMutation } from "../services/REDUX/slices/usersApiSlice";
 import { useNavigate } from "react-router-dom";
-import { setCredentials } from "../services/REDUX/slices/authSlice";
-import { useAppDispatch } from "../services/REDUX/hooks/reduxHooks";
+import { snackbarContext } from "../services/providers/Snackbar.provider";
+import { useContext } from "react";
+import useAuth from "../hooks/useAuth";
 
 const GoogleAuth = () => {
     var clientId: string = "286829291882-d5m5frt1qd9m16pjv0lho10aii043bin.apps.googleusercontent.com";
-
     const navigate = useNavigate();
+    const { setSnackbarContext } = useContext(snackbarContext);
 
-    const dispatch = useAppDispatch();
-    const [googleAuth] = useAuthGoogleMutation();
-    const handleOnSucces = async (credentialResponse: CredentialResponse) => {
+    const { loginGoogleAuth } = useAuth();
+
+    const handleSumbit = async (response: CredentialResponse) => {
         try {
-            const res = await googleAuth({ ...credentialResponse }).unwrap();
-            dispatch(setCredentials({ ...res }));
-            navigate("/");
+            const res = await loginGoogleAuth.mutateAsync(response);
+            if (res) {
+                navigate("/");
+            }
         } catch (err: any) {
-            console.log(err?.data?.message || err.error);
+            if (err?.success) return;
+            setSnackbarContext(err?.error?.message);
         }
     };
+
     return (
         <>
             <GoogleOAuthProvider clientId={clientId}>
                 <GoogleLogin
-                    onSuccess={handleOnSucces}
+                    onSuccess={handleSumbit}
                     onError={() => {
                         console.log("Login Failed");
                     }}

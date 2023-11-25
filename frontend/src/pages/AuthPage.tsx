@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, TextField, Typography, Box } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../services/REDUX/hooks/reduxHooks";
-import { setCredentials } from "../services/REDUX/slices/authSlice";
-import { useRegisterMutation, useLoginMutation } from "../services/REDUX/slices/usersApiSlice";
 import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
@@ -11,6 +8,7 @@ import TranslateText from "../components/shared/TranslateText";
 import PasswordInput from "../components/inputs/PasswordInput";
 import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
 import { snackbarContext } from "../services/providers/Snackbar.provider";
+import useAuth from "../hooks/useAuth";
 
 interface Props {
     isSignUp: Boolean;
@@ -24,15 +22,13 @@ const AuthScreen = ({ isSignUp }: Props) => {
         confirmPassword: "",
     });
 
+    const { register, login, userInfo } = useAuth();
+
     const { setSnackbarContext } = useContext(snackbarContext);
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
     const [error, setError] = useState<String | null>();
 
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const [register, registerProp] = useRegisterMutation();
-    const [login, loginProp] = useLoginMutation();
-    const { userInfo } = useAppSelector((state) => state.auth);
 
     useEffect(() => {
         if (userInfo) {
@@ -40,32 +36,26 @@ const AuthScreen = ({ isSignUp }: Props) => {
         }
     }, [navigate, userInfo]);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-    };
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             if (isSignUp) {
-                const res = await register({
-                    name: formData.name,
-                    email: formData.email,
-                    password: formData.password,
-                }).unwrap();
-                dispatch(setCredentials({ ...res }));
+                const res = await register.mutateAsync(formData);
             } else {
-                const res = await login({ ...formData }).unwrap();
-                dispatch(setCredentials({ ...res }));
+                const res = await login.mutateAsync(formData);
             }
             navigate("/");
         } catch (err: any) {
-            if (err?.data?.error?.success) return;
-            setFieldErrors(err?.data?.error?.fields as FieldErrors);
-            if (err?.data?.error?.fields.length == 0) setError(err?.data?.error?.message);
+            if (err?.success) return setError("");
+            setFieldErrors(err?.error?.fields as FieldErrors);
+            if (err?.error?.fields.length == 0) setError(err?.error?.message);
             else setError("");
             //setSnackbarContext({ open: true, severity: "error", message: err?.data?.error?.message || err.error });
         }
+    };
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
 
     return (
@@ -142,7 +132,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                             type="submit"
                             variant="contained"
                             color="primary"
-                            disabled={registerProp.isLoading || loginProp.isLoading}
+                            disabled={register.isPending || login.isPending}
                             fullWidth>
                             {isSignUp ? (
                                 <TranslateText tKey="authPage.register" />

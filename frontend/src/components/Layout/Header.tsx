@@ -1,6 +1,3 @@
-import { useAppDispatch, useAppSelector } from "../../services/REDUX/hooks/reduxHooks";
-import { useLogoutMutation } from "../../services/REDUX/slices/usersApiSlice";
-import { logout } from "../../services/REDUX/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Psychology, AccountCircle } from "@mui/icons-material";
 import { AppBar, Box, Button, Divider, ListItemIcon, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
@@ -9,19 +6,16 @@ import DarkModeToggle from "../shared/DarkModeToggle";
 import TranslateText from "../shared/TranslateText";
 import LocaleToggle from "../shared/LocaleToggle";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-    const { userInfo } = useAppSelector((state) => state.auth);
-
+    const { userInfo, logout } = useAuth();
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const [logoutApiCall] = useLogoutMutation();
 
     const logoutHandler = async () => {
         try {
-            await logoutApiCall().unwrap();
-            dispatch(logout());
-            googleLogout();
+            await logout.mutateAsync();
+            await googleLogout();
             navigate("/login");
         } catch (error: any) {
             console.log(error);

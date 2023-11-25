@@ -64,4 +64,4 @@ export const retrieveMUILocale = (dayJSLanguage: string) => {
     }
 };
 
-export const supportedLocales: MUILocaleData[] = [english, dutch];
+export const supportedLocales: MUILocaleData[] = [dutch, english];
