@@ -1,15 +1,17 @@
 import { createLogger, format, transports } from "winston";
 import "winston-daily-rotate-file";
-const { combine, timestamp, label, printf, prettyPrint, align, simple } = format;
+const { combine, timestamp, label, printf, prettyPrint, align, colorize } = format;
 
 function buildDevLogger() {
     const userLog = printf(({ level, message, timestamp, stack }) => {
-        return `${timestamp} ${level}: ${message || stack}`;
+        const stackFormat = stack ? stack : "";
+        return `${timestamp} ${level}: ${message} ${stackFormat}`;
     });
 
     let basicFormat = combine(
-        timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
         format.errors({ stack: true }),
+        timestamp({ format: "HH:mm:ss" }),
+        colorize(),
         align(),
         userLog
     );

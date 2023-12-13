@@ -6,20 +6,27 @@ import bcrypt from "bcryptjs";
 //Used this for hooks(beforeSave): https://sequelize.org/docs/v6/other-topics/hook
 @Table
 export default class User extends Model {
-    @Length({ min: 3 })
-    @Column
+    @Column({
+        allowNull: false,
+        validate: {
+            min: 3,
+        },
+    })
     declare name: string;
 
-    @IsEmail
-    @Unique
-    @Column //Column needs to be the last @ in the list
+    @Column({
+        unique: true,
+        allowNull: false,
+        validate: {
+            isEmail: { msg: "haha stom klote bericht" },
+        },
+    })
     declare email: string;
 
     @Column
     declare password: string;
 
-    @Unique
-    @Column
+    @Column({ unique: true })
     declare googleId: string;
 
     @BeforeSave

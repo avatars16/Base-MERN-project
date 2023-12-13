@@ -21,7 +21,7 @@ router.post("/logout", logoutUser);
 router
     .route("/profile")
     .get(protect, getUserProfile)
-    .put(protect, updateUserProfile)
+    .put(protect, addUserValidator, validatorHandler, updateUserProfile)
     .delete(protect, deleteUserProfile);
 
 export default router;

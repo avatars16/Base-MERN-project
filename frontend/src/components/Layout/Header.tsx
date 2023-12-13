@@ -7,10 +7,14 @@ import TranslateText from "../shared/TranslateText";
 import LocaleToggle from "../shared/LocaleToggle";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import useAuth from "../../hooks/useAuth";
+import { snackbarContext } from "../../services/providers/Snackbar.provider";
+import { useContext, useEffect } from "react";
 
 const Header = () => {
     const { userInfo, logout } = useAuth();
+    useEffect(() => {}, [userInfo]); //Forces rerender after login/logout
     const navigate = useNavigate();
+    const { setSnackbarContext } = useContext(snackbarContext);
 
     const logoutHandler = async () => {
         try {
@@ -18,7 +22,7 @@ const Header = () => {
             await googleLogout();
             navigate("/login");
         } catch (error: any) {
-            console.log(error);
+            setSnackbarContext({ open: true, severity: "error", message: error.message });
         }
     };
 

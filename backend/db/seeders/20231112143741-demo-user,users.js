@@ -8,14 +8,17 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         try {
             salt = await bcrypt.genSalt(10);
-
-            const users = [...Array(100)].map(() => ({
-                name: faker.person.fullName(),
-                email: faker.internet.email(),
-                password: bcrypt.hashSync(faker.internet.password({ length: 8 }), salt),
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            }));
+            const users = [...Array(100)].map(() => {
+                const firstName = faker.person.firstName();
+                const lastName = faker.person.lastName();
+                return {
+                    name: firstName + " " + lastName,
+                    email: faker.internet.email({ firstName, lastName }).toLowerCase(),
+                    password: bcrypt.hashSync(faker.internet.password({ length: 8 }), salt),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                };
+            });
 
             users.push({
                 name: "Bart Evelo",

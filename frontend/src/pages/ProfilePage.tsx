@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/forms/FormContainer";
-import { Button, TextField, IconButton, InputAdornment, Typography, Snackbar, Alert } from "@mui/material";
+import { Button, TextField, IconButton, InputAdornment, Typography } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import useAuth from "../hooks/useAuth";
+import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
 
 const ProfileScreen = () => {
     const { userInfo, update, deleteUser } = useAuth();
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -17,10 +19,14 @@ const ProfileScreen = () => {
         showPassword: false,
         showConfirmPassword: false,
     });
-
     const [passwordsMatch, setPasswordMatch] = useState(true);
+    const [generalError, setGeneralError] = useState<String | null>();
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
 
-    const [formFeedback, setFormFeedback] = useState({ open: false, errorMessage: "" });
+    useEffect(() => {
+        setFormData((prevFormData) => ({ ...prevFormData, name: userInfo!.name }));
+        setFormData((prevFormData) => ({ ...prevFormData, email: userInfo!.email }));
+    }, [userInfo]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -43,14 +49,6 @@ const ProfileScreen = () => {
         }));
     };
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        console.log(userInfo, "hierzo!");
-        setFormData((prevFormData) => ({ ...prevFormData, name: userInfo!.name }));
-        setFormData((prevFormData) => ({ ...prevFormData, email: userInfo!.email }));
-    }, [userInfo]);
-
     const submitHandler = async (e: React.FormEvent) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) return setPasswordMatch(false);
@@ -58,7 +56,11 @@ const ProfileScreen = () => {
             const res = await update.mutateAsync(formData);
             navigate("/");
         } catch (err: any) {
-            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
+            setGeneralError("");
+            setFieldErrors(undefined);
+            if (err?.success) return setGeneralError("");
+            if (err?.error?.fields.length != 0) setFieldErrors(err.error.fields as FieldErrors);
+            else setGeneralError(err.error.message);
         }
     };
 
@@ -69,13 +71,16 @@ const ProfileScreen = () => {
             await deleteUser.mutateAsync();
             navigate("/");
         } catch (err: any) {
-            setFormFeedback({ open: true, errorMessage: err?.data?.message || err.error });
+            setGeneralError(err?.error.message || err.error);
         }
     };
 
     return (
         <FormContainer>
             <Typography variant="h4">Update Profile</Typography>
+            <Typography variant="body2" color="red">
+                {generalError ? generalError : ""}
+            </Typography>
             <form
                 onSubmit={(e) => {
                     submitHandler(e);
@@ -90,6 +95,8 @@ const ProfileScreen = () => {
                     margin="normal"
                     fullWidth
                     required
+                    error={hasError(fieldErrors, "name")}
+                    helperText={getHelperText(fieldErrors, "name")}
                 />
 
                 <TextField
@@ -103,6 +110,8 @@ const ProfileScreen = () => {
                     margin="normal"
                     fullWidth
                     required
+                    error={hasError(fieldErrors, "email")}
+                    helperText={getHelperText(fieldErrors, "email")}
                 />
 
                 <TextField
@@ -114,6 +123,8 @@ const ProfileScreen = () => {
                     onChange={handleInputChange}
                     margin="normal"
                     fullWidth
+                    error={hasError(fieldErrors, "password")}
+                    helperText={getHelperText(fieldErrors, "password")}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -164,9 +175,6 @@ const ProfileScreen = () => {
                     </Grid>
                 </Grid>
             </form>
-            <Snackbar open={formFeedback.open} autoHideDuration={6000}>
-                <Alert severity="error">{formFeedback.errorMessage}</Alert>
-            </Snackbar>
         </FormContainer>
     );
 };

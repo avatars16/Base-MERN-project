@@ -11,6 +11,7 @@ import {
     retrieveLocalization,
     supportedLocales,
 } from "../../theme/SupportedLocales";
+import i18n from "i18next";
 
 //Inspired by: https://medium.com/@itayperry91/react-and-mui-change-muis-theme-mode-direction-and-language-including-date-pickers-ad8e91af30ae
 //Changed it to work with REDUX ~Bart E
@@ -43,15 +44,14 @@ export default function MuiProvider({ children }: { children: React.ReactNode })
         []
     );
 
-    const theme = useMemo(
-        () =>
-            createTheme(
-                getDesignTokens(mode, locale.direction),
-                retrieveLocalization(locale.dayJSLanguage),
-                retrieveDatePickerLocale(locale.dayJSLanguage)
-            ),
-        [mode, locale]
-    );
+    const theme = useMemo(() => {
+        i18n.changeLanguage(locale.dayJSLanguage);
+        return createTheme(
+            getDesignTokens(mode, locale.direction),
+            retrieveLocalization(locale.dayJSLanguage),
+            retrieveDatePickerLocale(locale.dayJSLanguage)
+        );
+    }, [mode, locale]);
     useEffect(() => {
         document.dir = locale.direction;
         document.title = t("header.title");

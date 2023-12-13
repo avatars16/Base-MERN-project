@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, TextField, Typography, Box } from "@mui/material";
+import { Button, TextField, Typography, Box, Select } from "@mui/material";
 import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
@@ -9,31 +9,27 @@ import PasswordInput from "../components/inputs/PasswordInput";
 import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
 import { snackbarContext } from "../services/providers/Snackbar.provider";
 import useAuth from "../hooks/useAuth";
+import { FormFields } from "../components/forms/Form";
 
 interface Props {
     isSignUp: Boolean;
 }
 
 const AuthScreen = ({ isSignUp }: Props) => {
+    const { register, login, userInfo } = useAuth();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         password: "",
         confirmPassword: "",
     });
-
-    const { register, login, userInfo } = useAuth();
-
-    const { setSnackbarContext } = useContext(snackbarContext);
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
-    const [error, setError] = useState<String | null>();
-
-    const navigate = useNavigate();
+    const [generalError, setGeneralError] = useState<String | null>();
 
     useEffect(() => {
-        if (userInfo) {
-            navigate("/");
-        }
+        if (userInfo) navigate("/");
     }, [navigate, userInfo]);
 
     const submitHandler = async (e: React.FormEvent) => {
@@ -46,11 +42,12 @@ const AuthScreen = ({ isSignUp }: Props) => {
             }
             navigate("/");
         } catch (err: any) {
-            if (err?.success) return setError("");
-            setFieldErrors(err?.error?.fields as FieldErrors);
-            if (err?.error?.fields.length == 0) setError(err?.error?.message);
-            else setError("");
-            //setSnackbarContext({ open: true, severity: "error", message: err?.data?.error?.message || err.error });
+            setGeneralError("");
+            setFieldErrors(undefined);
+            if (err?.success) return setGeneralError("");
+            if (err?.error?.fields !== undefined) {
+                setFieldErrors(err.error.fields as FieldErrors);
+            } else setGeneralError(err.error.message);
         }
     };
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +55,58 @@ const AuthScreen = ({ isSignUp }: Props) => {
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
 
+    const formFields: FormFields<React.ComponentType<any>>[] = [
+        {
+            component: TextField,
+            name: "name",
+            translateKey: "formFields.name",
+            props: {
+                value: formData.name,
+                onChange: handleInputChange,
+                required: isSignUp,
+            },
+        },
+        {
+            component: TextField,
+            name: "email",
+            translateKey: "formFields.email",
+            props: {
+                value: formData.email,
+                onChange: handleInputChange,
+                required: true,
+            },
+        },
+        {
+            component: PasswordInput,
+            name: "password",
+            translateKey: "formFields.password",
+            props: {
+                changeVisibility: true,
+                value: formData.password,
+                onChange: handleInputChange,
+                required: true,
+            },
+        },
+        {
+            component: PasswordInput,
+            name: "confirmPassword",
+            translateKey: "formFields.confirmPassword",
+            props: {
+                changeVisibility: false,
+                value: formData.confirmPassword,
+                onChange: handleInputChange,
+                required: true,
+            },
+        },
+    ];
+
     return (
         <FormContainer>
             <Typography variant="h4" sx={{ mb: 2 }}>
                 {isSignUp ? <TranslateText tKey="authPage.register" /> : <TranslateText tKey="authPage.login" />}
             </Typography>
             <Typography variant="body2" color="red">
-                {error ? error : ""}
+                {generalError ? generalError : ""}
             </Typography>
             <form
                 onSubmit={(e) => {

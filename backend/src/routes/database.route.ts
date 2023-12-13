@@ -7,9 +7,9 @@ import { sequelize } from "../config/sequilize";
 router.get(
     "/sync",
     expressAsyncHandler(async (req, res, next) => {
-        console.log("hoi");
         if (process.env.NODE_ENV !== "development") throw Error("This route is only accesible during development");
         if (req.query.alter) await sequelize.sync({ alter: true }); // /database/sync?alter
+        else if (req.query.force == "") await sequelize.sync({ force: true }); // /database/sync?alter
         else await sequelize.sync();
         res.json({ success: true });
     })

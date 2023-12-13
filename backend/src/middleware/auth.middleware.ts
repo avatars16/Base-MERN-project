@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/user.model";
 import { jwtUserToken } from "../../types/jwtTokens";
 import logger from "../logger";
+import PermissionError from "../errors/permission-error";
 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
@@ -11,17 +12,14 @@ const protect = asyncHandler(async (req, res, next) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET!) as jwtUserToken;
             let user = await User.findByPk(decoded.userId); //.select("-password");
-            if (user === null) throw new Error("Not authorized, invalid user id");
+            if (user === null) throw new PermissionError("unauthorized", "invalid user id");
             req.user = user;
             next();
         } catch (error) {
-            logger.error(error);
-            res.status(401);
-            throw new Error("Not authorized, invalid token");
+            throw new PermissionError("unauthorized", "invalid token");
         }
     } else {
-        res.status(401);
-        throw new Error("Not authorized; no token");
+        throw new PermissionError("unauthorized", "no token");
     }
 });
 

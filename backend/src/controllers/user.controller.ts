@@ -12,6 +12,7 @@ import { TokenPayload } from "google-auth-library";
  */
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body);
     const user = await User.findOne({ where: { email } });
     if (user && (await user.matchPassword(password))) {
         generateToken(res, user.id);
@@ -32,7 +33,6 @@ const authUser = asyncHandler(async (req, res) => {
  */
 const googleAuthUser = asyncHandler(async (req, res) => {
     const { credential, clientId, select_by } = req.body;
-    console.log(typeof select_by);
     const decodedToken = jwt.decode(credential) as TokenPayload;
     if (
         decodedToken.aud !== process.env.GOOGLE_CLIENT_ID ||
@@ -70,10 +70,6 @@ const googleAuthUser = asyncHandler(async (req, res) => {
  */
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
-    const userExists = await User.findOne({ where: { email } });
-    if (userExists) {
-        throw new ValidationError("Email address already taken", [{ name: "email", message: "Email adress taken" }]);
-    }
     const user = await User.create({
         name,
         email,

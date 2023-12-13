@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(useragent.express()); //Required for contextData
 
 //Api Routes
-app.use("/database/", databaseRoutes);
+app.use("/api/database/", databaseRoutes);
 app.use("/api/users/", userRoutes);
 
 //Serving dist files when in production
