@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, TextField, Typography, Box, Select } from "@mui/material";
+import { Button, TextField, Typography, Box, Select, TextFieldProps } from "@mui/material";
 import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import GoogleAuth from "../components/GoogleAuth";
@@ -9,7 +9,7 @@ import PasswordInput from "../components/inputs/PasswordInput";
 import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
 import { snackbarContext } from "../services/providers/Snackbar.provider";
 import useAuth from "../hooks/useAuth";
-import { FormFields } from "../components/forms/Form";
+import Form, { FormFields } from "../components/forms/Form";
 
 interface Props {
     isSignUp: Boolean;
@@ -26,7 +26,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
         confirmPassword: "",
     });
     const [fieldErrors, setFieldErrors] = useState<FieldErrors>();
-    const [generalError, setGeneralError] = useState<String | null>();
+    const [generalError, setGeneralError] = useState<string | undefined>();
 
     useEffect(() => {
         if (userInfo) navigate("/");
@@ -55,55 +55,10 @@ const AuthScreen = ({ isSignUp }: Props) => {
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
 
-    const formFields: FormFields<React.ComponentType<any>>[] = [
-        {
-            component: TextField,
-            name: "name",
-            translateKey: "formFields.name",
-            props: {
-                value: formData.name,
-                onChange: handleInputChange,
-                required: isSignUp,
-            },
-        },
-        {
-            component: TextField,
-            name: "email",
-            translateKey: "formFields.email",
-            props: {
-                value: formData.email,
-                onChange: handleInputChange,
-                required: true,
-            },
-        },
-        {
-            component: PasswordInput,
-            name: "password",
-            translateKey: "formFields.password",
-            props: {
-                changeVisibility: true,
-                value: formData.password,
-                onChange: handleInputChange,
-                required: true,
-            },
-        },
-        {
-            component: PasswordInput,
-            name: "confirmPassword",
-            translateKey: "formFields.confirmPassword",
-            props: {
-                changeVisibility: false,
-                value: formData.confirmPassword,
-                onChange: handleInputChange,
-                required: true,
-            },
-        },
-    ];
-
     return (
         <FormContainer>
             <Typography variant="h4" sx={{ mb: 2 }}>
-                {isSignUp ? <TranslateText tKey="authPage.register" /> : <TranslateText tKey="authPage.login" />}
+                <TranslateText tKey={isSignUp ? "authPage.register" : "authPage.login"} />
             </Typography>
             <Typography variant="body2" color="red">
                 {generalError ? generalError : ""}
@@ -169,23 +124,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                 )}
 
                 <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
-                    <Grid xs={12} sm={6}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            disabled={register.isPending || login.isPending}
-                            fullWidth>
-                            {isSignUp ? (
-                                <TranslateText tKey="authPage.register" />
-                            ) : (
-                                <TranslateText tKey="authPage.login" />
-                            )}
-                        </Button>
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <GoogleAuth />
-                    </Grid>
+                    <Grid xs={12} sm={6}></Grid>
                 </Grid>
                 <Box sx={{ mt: 2 }}>
                     <Typography paragraph>

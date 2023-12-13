@@ -5,14 +5,14 @@ import { FieldErrors, getHelperText, hasError } from "../../utils/field-validati
 import TranslateText from "../shared/TranslateText";
 import { Link } from "react-router-dom";
 
-export type FormFields<T extends React.ComponentType<any> = any> = {
+export type FormFields<T extends React.ComponentType<T>> = {
     name: string;
     translateKey: string;
     component: T;
     props?: React.ComponentProps<T>;
 };
 
-export type GeneralError = string | null;
+export type GeneralError = string;
 
 type FormButton = {
     textKey: string;
@@ -20,7 +20,7 @@ type FormButton = {
 };
 
 type Props = {
-    fields: FormFields<typeof Switch | typeof TextField>[];
+    fields: FormFields<any>[];
     submitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
     formData?: any;
     setFormData?: (formData: any) => void;
@@ -55,7 +55,8 @@ const Form = ({
                         <Component
                             key={field.name}
                             error={hasError(fieldErrors, field.name)}
-                            helperText={getHelperText(fieldErrors, field.name)}></Component>
+                            helperText={field.props.helperText || getHelperText(fieldErrors, field.name)}
+                            {...field.props}></Component>
                     );
                 })}
                 <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
@@ -82,25 +83,6 @@ const Form = ({
                         )}
                     </Grid>
                 </Grid>
-                <Box sx={{ mt: 2 }}>
-                    {/* <Typography paragraph>
-                        {isSignUp ? (
-                            <>
-                                <TranslateText tKey="authPage.alreadyAccount" />{" "}
-                                <Link to="/login">
-                                    <TranslateText tKey="authPage.loginHere" />!
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <TranslateText tKey="authPage.noAccount" />{" "}
-                                <Link to="/register">
-                                    <TranslateText tKey="authPage.registerHere" />!
-                                </Link>
-                            </>
-                        )}
-                    </Typography> */}
-                </Box>
             </form>
         </FormContainer>
     );

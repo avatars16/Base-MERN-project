@@ -12,7 +12,6 @@ import { TokenPayload } from "google-auth-library";
  */
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body);
     const user = await User.findOne({ where: { email } });
     if (user && (await user.matchPassword(password))) {
         generateToken(res, user.id);
