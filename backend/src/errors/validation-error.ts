@@ -21,7 +21,7 @@ class ValidationError extends Error {
         this.fields = fields;
     }
     // Custom static method to handle ValidationError
-    static handle(error: ValidationError, req: Request, res: Response, next: NextFunction) {
+    static handle(error: ValidationError, _req: Request, res: Response, _next: NextFunction) {
         logger.warn(error.message);
         res.status(400).json({
             success: false,

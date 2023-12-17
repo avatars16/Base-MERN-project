@@ -53,7 +53,7 @@ const ProfileScreen = () => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) return setPasswordMatch(false);
         try {
-            const res = await update.mutateAsync(formData);
+            await update.mutateAsync(formData);
             navigate("/");
         } catch (err: any) {
             setGeneralError("");

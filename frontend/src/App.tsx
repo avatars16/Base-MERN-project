@@ -1,23 +1,23 @@
-import Header from "./components/Layout/Header";
-import InstallPwaPrompt from "./components/InstallPwaPrompt";
-import { Outlet } from "react-router-dom";
-import { CssBaseline, Container } from "@mui/material";
-import CheckLocaleChange from "./components/CheckLocale";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import { privateRoutes, publicRoutes } from "./routes";
 
 const App = () => {
     return (
         <>
-            <CssBaseline />
-            <Header />
-            <main>
-                <Container maxWidth="md" sx={{ mt: 5 }}>
-                    <Outlet /> {/* Puts the element passed in the router inside of this element */}
-                    <CheckLocaleChange />
-                </Container>
-                <ReactQueryDevtools />
-            </main>
-            <InstallPwaPrompt />
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    <Route element={<PrivateRoute />}>
+                        {privateRoutes.map((route) => (
+                            <Route key={route.path} path={route.path} element={route.element} />
+                        ))}
+                    </Route>
+                    {publicRoutes.map((route) => (
+                        <Route key={route.path} index={route.index} path={route.path} element={route.element} />
+                    ))}
+                </Routes>
+            </Suspense>
         </>
     );
 };

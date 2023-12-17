@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, TextField, Typography, Switch, Grid, Box } from "@mui/material";
+import { Button, Typography, Grid } from "@mui/material";
 import FormContainer from "./FormContainer";
 import { FieldErrors, getHelperText, hasError } from "../../utils/field-validation-errors";
 import TranslateText from "../shared/TranslateText";
-import { Link } from "react-router-dom";
 
 export type FormFields<T extends React.ComponentType<T>> = {
     name: string;
