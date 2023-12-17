@@ -8,10 +8,9 @@ import {
     registerUser,
     updateUserProfile,
 } from "../api/auth.api";
-import { UserBody } from "../../../backend/types/model";
 const useAuth = () => {
+    useQuery({ queryKey: ["user"], queryFn: getUserProfile, staleTime: 1000 * 60 * 60 });
     const queryClient = useQueryClient();
-    const queryResult = useQuery({ queryKey: ["user"], queryFn: getUserProfile, staleTime: 1000 * 60 * 60 });
 
     const login = useMutation({
         mutationFn: loginUser,
@@ -57,7 +56,7 @@ const useAuth = () => {
     });
 
     const userInfo =
-        queryClient == undefined ? undefined : queryClient.getQueryData<{ user: UserBody } | undefined>(["user"])?.user;
+        queryClient == undefined ? undefined : queryClient.getQueryData<{ user: any } | undefined>(["user"])?.user;
     return { login, loginGoogleAuth, logout, register, update, deleteUser: deleteUserProfile, userInfo };
 };
 

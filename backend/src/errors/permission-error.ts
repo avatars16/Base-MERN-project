@@ -23,7 +23,7 @@ class PermissionError extends Error {
         this.code = type === "unauthorized" ? 401 : 403;
     }
     // Custom static method to handle ValidationError
-    static handle(error: PermissionError, req: Request, res: Response, next: NextFunction) {
+    static handle(error: PermissionError, _req: Request, res: Response, _next: NextFunction) {
         error.message = `${error.type}: ${error.message}` || "Permission Error";
         logger.warn(error.message);
         const reponse: PermissionErrorResponse = {

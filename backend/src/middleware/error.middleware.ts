@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import ValidationError from "../errors/validation-error";
 import { Request, Response, NextFunction } from "express";
 import logger from "../logger";
@@ -23,10 +22,6 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
     let message = err.message;
     if (err instanceof ValidationError) return ValidationError.handle(err, req, res, next);
     if (err instanceof PermissionError) return PermissionError.handle(err, req, res, next);
-    else if (err instanceof mongoose.Error.CastError && err.kind === "ObjectId") {
-        statusCode = 404;
-        message = "Resource not found";
-    }
     logger.error(err);
     const response: ErrorResponse = {
         success: false,
