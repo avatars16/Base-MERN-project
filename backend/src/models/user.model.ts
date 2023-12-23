@@ -1,4 +1,4 @@
-import { Table, Column, Model, BeforeSave } from "sequelize-typescript";
+import { Table, Column, Model, IsEmail, Unique, BeforeSave, Length } from "sequelize-typescript";
 import { sequelize } from "../config/sequilize";
 import bcrypt from "bcryptjs";
 

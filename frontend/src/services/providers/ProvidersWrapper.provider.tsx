@@ -1,14 +1,14 @@
 import MuiProvider from "./Mui.provider";
 import SnackbarProvider from "./Snackbar.provider";
 import "../i18n/config";
-import QueryClientProvider from "./QueryClient.provider";
+import QueryClientWrapper from "./QueryClient.provider";
 
 export default function ProvidersWrapper({ children }: { children: React.ReactNode }) {
     return (
         <MuiProvider>
-            <QueryClientProvider>
+            <QueryClientWrapper>
                 <SnackbarProvider>{children}</SnackbarProvider>
-            </QueryClientProvider>
+            </QueryClientWrapper>
         </MuiProvider>
     );
 }

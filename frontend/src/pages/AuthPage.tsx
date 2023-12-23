@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, TextField, Typography, Box } from "@mui/material";
+import { Button, TextField, Typography, Box, Select, TextFieldProps } from "@mui/material";
 import FormContainer from "../components/forms/FormContainer";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-const GoogleAuth = React.lazy(() => import("../components/GoogleAuth"));
+import GoogleAuth from "../components/GoogleAuth";
 import TranslateText from "../components/shared/TranslateText";
 import PasswordInput from "../components/inputs/PasswordInput";
 import { FieldErrors, getHelperText, hasError } from "../utils/field-validation-errors";
+import { snackbarContext } from "../services/providers/Snackbar.provider";
 import useAuth from "../hooks/useAuth";
+import Form, { FormFields } from "../components/forms/Form";
 
 interface Props {
     isSignUp: Boolean;
@@ -34,9 +36,9 @@ const AuthScreen = ({ isSignUp }: Props) => {
         e.preventDefault();
         try {
             if (isSignUp) {
-                await register.mutateAsync(formData);
+                const res = await register.mutateAsync(formData);
             } else {
-                await login.mutateAsync(formData);
+                const res = await login.mutateAsync(formData);
             }
             navigate("/");
         } catch (err: any) {
@@ -122,23 +124,7 @@ const AuthScreen = ({ isSignUp }: Props) => {
                 )}
 
                 <Grid container spacing={1} sx={{ justifyContent: "end", mt: 2 }}>
-                    <Grid xs={12} sm={6}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            disabled={register.isPending || login.isPending}
-                            fullWidth>
-                            {isSignUp ? (
-                                <TranslateText tKey="authPage.register" />
-                            ) : (
-                                <TranslateText tKey="authPage.login" />
-                            )}
-                        </Button>
-                    </Grid>
-                    <Grid xs={12} sm={6}>
-                        <GoogleAuth />
-                    </Grid>
+                    <Grid xs={12} sm={6}></Grid>
                 </Grid>
                 <Box sx={{ mt: 2 }}>
                     <Typography paragraph>
