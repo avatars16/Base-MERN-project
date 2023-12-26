@@ -1,0 +1,27 @@
+{
+    "buttons": {
+        "ok": "OK",
+        "cancel": "Cancel",
+        "yes": "Yes",
+        "no": "No",
+        "save": "Save",
+        "reset": "Reset",
+        "submit": "Submit",
+        "back": "Back",
+        "next": "Next",
+        "close": "Close",
+        "add": "Add",
+        "remove": "Remove",
+        "reload": "Reload",
+        "edit": "Edit",
+        "view": "View",
+        "search": "Search",
+        "finish": "Finish",
+        "copy": "Copy",
+        "print": "Print",
+        "preview": "Preview",
+        "refresh": "Refresh",
+        "download": "Download",
+        "upload": "Upload"
+    }
+}

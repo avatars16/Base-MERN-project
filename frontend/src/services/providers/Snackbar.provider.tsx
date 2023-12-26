@@ -12,6 +12,8 @@ export const snackbarContext = createContext({
     setSnackbarContext: (_snackbarContent: SnackbarContent) => {},
 });
 
+export type SetSnackbarContext = (snackbarContent: SnackbarContent) => void;
+
 export default function SnackbarProvider({ children }: { children: React.ReactNode }) {
     const [snackbarContent, setSnackbarContext] = useState<SnackbarContent>({
         open: false,

@@ -1,0 +1,5 @@
+{
+    "hero": {
+        "text": "Dit is een basis opzetje voor Authenticatie met gebruik van het MERN framework. Het slaat JWT op in HTTP-Only cookies. Daarnaast gebruikt het Redux Toolkit, MUI library en i18next."
+    }
+}

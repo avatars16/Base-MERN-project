@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 interface Props {
     tKey: string;
-    params?: Object;
+    params?: Record<string, string>;
 }
 
 const TranslateText = ({ tKey, params }: Props) => {

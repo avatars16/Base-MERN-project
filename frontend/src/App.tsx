@@ -1,21 +1,25 @@
-import Header from "./components/Layout/Header";
-import { Outlet } from "react-router-dom";
-import { CssBaseline, Container } from "@mui/material";
-import CheckLocaleChange from "./components/CheckLocale";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
+import PrivateRoute from "./components/PrivateRoute";
+import { privateRoutes, publicRoutes } from "./routes";
 
 const App = () => {
     return (
         <>
-            <CssBaseline />
-            <Header />
-            <main>
-                <Container maxWidth="md" sx={{ mt: 5 }}>
-                    <Outlet /> {/* Puts the element passed in the router inside of this element */}
-                    <CheckLocaleChange />
-                </Container>
-                <ReactQueryDevtools />
-            </main>
+            <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                    <Route path="/">
+                        <Route element={<PrivateRoute />}>
+                            {privateRoutes.map((route) => (
+                                <Route key={route.path} path={route.path} element={route.element} />
+                            ))}
+                        </Route>
+                        {publicRoutes.map((route) => (
+                            <Route key={route.path} index={route.index} path={route.path} element={route.element} />
+                        ))}
+                    </Route>
+                </Routes>
+            </Suspense>
         </>
     );
 };

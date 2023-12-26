@@ -2,13 +2,14 @@ import { Container, Paper } from "@mui/material";
 
 interface Props {
     children: React.ReactNode;
+    formProps: React.ComponentProps<"form">;
 }
 
-const FormContainer = ({ children }: Props) => {
+const FormContainer = ({ children, formProps }: Props) => {
     return (
         <Container maxWidth="xs">
             <Paper elevation={3} sx={{ padding: 4 }}>
-                {children}
+                <form {...formProps}>{children}</form>
             </Paper>
         </Container>
     );

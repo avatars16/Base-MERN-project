@@ -1,6 +1,11 @@
 import Hero from "../components/Hero";
+import DefaultPageLayout from "../components/Layout/DefaultPageLayout";
 
 const HomeScreen = () => {
-    return <Hero></Hero>;
+    return (
+        <DefaultPageLayout>
+            <Hero />
+        </DefaultPageLayout>
+    );
 };
 export default HomeScreen;

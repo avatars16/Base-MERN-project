@@ -1,8 +1,8 @@
-import { ReactElement } from "react";
-import AuthScreen from "./pages/AuthPage";
-import ProfileScreen from "./pages/ProfilePage";
-import HomeScreen from "./pages/HomePage";
+import React, { ReactElement } from "react";
 import NotFoundPage from "./pages/NotFoundPage";
+const AuthScreen = React.lazy(() => import("./pages/AuthPage"));
+const ProfileScreen = React.lazy(() => import("./pages/ProfilePage"));
+const HomeScreen = React.lazy(() => import("./pages/HomePage"));
 
 type Route = {
     path: string;

@@ -11,7 +11,7 @@ const LocaleToggle = () => {
             <Box sx={{ minWidth: 120, color: "inherit" }}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                        <TranslateText tKey="header.language" />
+                        <TranslateText tKey="common:language" />
                     </InputLabel>
                     <Select
                         id="demo-simple-select"

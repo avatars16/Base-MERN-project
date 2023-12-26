@@ -16,7 +16,7 @@ import validatorHandler from "../middleware/validator.middleware";
 
 router.post("/auth/google", signUpSignInLimiter, googleAuthUser);
 router.post("/auth", signUpSignInLimiter, authUser);
-router.post("/", signUpSignInLimiter, addUserValidator, validatorHandler, registerUser);
+router.post("/", signUpSignInLimiter, registerUser);
 router.post("/logout", logoutUser);
 router
     .route("/profile")

@@ -1,0 +1,6 @@
+{
+    "name": "Naam",
+    "email": "Email",
+    "password": "Wachtwoord",
+    "confirmPassword": "Bevestig wachtwoord"
+}

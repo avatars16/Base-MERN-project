@@ -1,0 +1,27 @@
+{
+    "buttons": {
+        "ok": "OK",
+        "cancel": "Annuleer",
+        "yes": "Ja",
+        "no": "Nee",
+        "save": "Opslaan",
+        "reset": "Reset",
+        "submit": "Versturen",
+        "back": "Terug",
+        "next": "Volgende",
+        "close": "Sluiten",
+        "add": "Toevoegen",
+        "remove": "Verwijderen",
+        "reload": "Herladen",
+        "edit": "Bewerken",
+        "view": "Bekijken",
+        "search": "Zoeken",
+        "finish": "Voltooien",
+        "copy": "Kopiëren",
+        "print": "Printen",
+        "preview": "Voorbeeld",
+        "refresh": "Vernieuwen",
+        "download": "Downloaden",
+        "upload": "Uploaden"
+    }
+}

@@ -10,6 +10,9 @@ export default i18next
     .use(HttpApi)
     .init({
         fallbackLng: "nl",
+        debug: true,
+        defaultNS: "common",
+        ns: ["common", "input", "ui", "homePage", "authPage", "profilePage"],
         detection: {
             order: [
                 "querystring",
@@ -23,10 +26,10 @@ export default i18next
             ],
         },
         backend: {
-            loadPath: "/assets/locals/{{lng}}/translation.json",
+            loadPath: "/assets/locals/{{ns}}/{{lng}}.json",
         },
         keySeparator: ".",
         react: {
-            useSuspense: false,
+            useSuspense: true,
         },
     });

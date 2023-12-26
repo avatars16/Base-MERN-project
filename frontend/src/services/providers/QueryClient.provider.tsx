@@ -8,6 +8,7 @@ export default function QueryClientWrapper({ children }: { children: React.React
     const queryCache = new QueryCache({
         onError: (error, query) => {
             const err = error as unknown as ApiReponseError;
+            console.log(err);
             //If we get a unauthorized or forbidden error, set data to null to invalidate the cache
             if (err.error.code == 400 || err.error.code == 401 || err.error.code == 403) {
                 query.state.data = null;

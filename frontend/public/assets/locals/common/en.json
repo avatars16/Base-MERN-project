@@ -1,0 +1,5 @@
+{
+    "title": "MERN Authentication",
+    "hiUser": "Hi {{userName}}",
+    "language": "language"
+}
