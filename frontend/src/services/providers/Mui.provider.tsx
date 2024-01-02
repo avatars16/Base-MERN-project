@@ -1,5 +1,6 @@
 // MUIWrapper.tsx file
-import { createTheme, PaletteMode, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { PaletteMode } from "@mui/material";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { getDesignTokens } from "../../theme/theme";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";

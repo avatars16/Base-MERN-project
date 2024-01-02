@@ -11,7 +11,7 @@ export default i18next
     .use(HttpApi)
     .init<HttpBackendOptions>({
         fallbackLng: "nl",
-        debug: true,
+        // debug: true,
         defaultNS: "common",
         ns: ["common", "input", "ui", "homePage", "authPage", "profilePage"],
         detection: {
@@ -27,10 +27,8 @@ export default i18next
             ],
         },
         backend: {
-            loadPath: "/assets/locals/{{ns}}/{{lng}}/{{key}}.json",
-            request: async (options, url, payload, callback) => {
-                console.log("hier!");
-                console.log(options);
+            loadPath: "/assets/locals/{{ns}}/{{lng}}.json",
+            request: async (_options, url, _payload, callback) => {
                 try {
                     const translation = await axios.get(url);
                     callback(null, {

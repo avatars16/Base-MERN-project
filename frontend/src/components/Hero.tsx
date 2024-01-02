@@ -1,4 +1,6 @@
-import { Button, Paper, Stack, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import TranslateText from "./shared/TranslateText";

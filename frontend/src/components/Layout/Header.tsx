@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { googleLogout } from "@react-oauth/google";
+// import { googleLogout } from "@react-oauth/google";
 import DarkModeToggle from "../shared/DarkModeToggle";
 import TranslateText from "../shared/TranslateText";
 import LocaleToggle from "../shared/LocaleToggle";
@@ -27,7 +27,7 @@ const Header = () => {
     const logoutHandler = async () => {
         try {
             await logoutUser.mutateAsync();
-            await googleLogout();
+            // await googleLogout();
             navigate("/login");
         } catch (error: any) {
             setSnackbarContext({ open: true, severity: "error", message: error.message });

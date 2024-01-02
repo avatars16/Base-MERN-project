@@ -1,7 +1,8 @@
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FormContainer from "../../../components/forms/FormContainer";
-import { TextField, Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import useAuth from "../../../hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";

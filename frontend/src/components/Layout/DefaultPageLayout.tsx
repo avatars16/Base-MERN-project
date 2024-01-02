@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { Container } from "@mui/material";
+import Container from "@mui/material/Container";
 const CheckLocaleChange = React.lazy(() => import("../CheckLocale"));
 
 type Props = {

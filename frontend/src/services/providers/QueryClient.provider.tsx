@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-query";
-import "../i18n/config";
 import { ApiReponseError } from "../../../../backend/types/api-error-response";
 
 export default function QueryClientWrapper({ children }: { children: React.ReactNode }) {

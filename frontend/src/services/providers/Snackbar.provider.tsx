@@ -1,6 +1,7 @@
 // MUIWrapper.tsx file
 import { createContext, useState } from "react";
-import { Alert, AlertColor, Snackbar } from "@mui/material";
+import Alert, { AlertColor } from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 type SnackbarContent = {
     open: boolean;

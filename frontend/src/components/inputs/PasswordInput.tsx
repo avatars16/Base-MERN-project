@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { TextField, IconButton, InputAdornment, TextFieldProps } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 type PasswordInputProps = {
     name: "password" | "confirmPassword";
@@ -29,7 +32,7 @@ const PasswordInput = ({ name, label, changeVisibility, ...textFieldProps }: Pas
                 endAdornment: changeVisibility && (
                     <InputAdornment position="end">
                         <IconButton onClick={handleTogglePasswordVisibility}>
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                         </IconButton>
                     </InputAdornment>
                 ),

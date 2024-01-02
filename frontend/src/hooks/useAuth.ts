@@ -2,16 +2,16 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import {
     deleteUserApi,
     getUserApi,
-    loginGoogleUserApi,
+    // loginGoogleUserApi,
     loginUserApi,
     logoutUserApi,
     registerUserApi,
     updateUserApi,
 } from "../api/auth.api";
-import { UserBody } from "../../../backend/types/model";
+import { UserResponse } from "../../../backend/types/schemas/User.schema";
 const useAuth = () => {
     const queryClient = useQueryClient();
-    const queryResult = useQuery({ queryKey: ["user"], queryFn: getUserApi, staleTime: 1000 * 60 * 60 });
+    useQuery({ queryKey: ["user"], queryFn: getUserApi, staleTime: 1000 * 60 * 60 });
 
     const loginUser = useMutation({
         mutationKey: ["user", "login"],
@@ -21,13 +21,13 @@ const useAuth = () => {
             queryClient.invalidateQueries({ queryKey: ["user"] });
         },
     });
-    const loginGoogleAuth = useMutation({
-        mutationFn: loginGoogleUserApi,
-        onSuccess: (data, _variables, _context) => {
-            queryClient.setQueryData(["user"], data.data);
-            queryClient.invalidateQueries({ queryKey: ["user"] });
-        },
-    });
+    // const loginGoogleAuth = useMutation({
+    //     mutationFn: loginGoogleUserApi,
+    //     onSuccess: (data, _variables, _context) => {
+    //         queryClient.setQueryData(["user"], data.data);
+    //         queryClient.invalidateQueries({ queryKey: ["user"] });
+    //     },
+    // });
 
     const logoutUser = useMutation({
         mutationKey: ["user", "logout"],
@@ -61,8 +61,10 @@ const useAuth = () => {
     });
 
     const userInfo =
-        queryClient == undefined ? undefined : queryClient.getQueryData<{ user: UserBody } | undefined>(["user"])?.user;
-    return { loginUser, loginGoogleAuth, logoutUser, registerUser, updateUser, deleteUser: deleteUser, userInfo };
+        queryClient == undefined
+            ? undefined
+            : queryClient.getQueryData<{ user: UserResponse } | undefined>(["user"])?.user;
+    return { loginUser, /*loginGoogleAuth,*/ logoutUser, registerUser, updateUser, deleteUser: deleteUser, userInfo };
 };
 
 export default useAuth;

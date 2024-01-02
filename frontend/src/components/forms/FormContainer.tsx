@@ -1,4 +1,5 @@
-import { Container, Paper } from "@mui/material";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 
 interface Props {
     children: React.ReactNode;

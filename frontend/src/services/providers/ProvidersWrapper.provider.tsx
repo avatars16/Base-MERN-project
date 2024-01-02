@@ -1,7 +1,8 @@
 import MuiProvider from "./Mui.provider";
 import SnackbarProvider from "./Snackbar.provider";
-import "../i18n/config";
 import QueryClientWrapper from "./QueryClient.provider";
+import "../i18n/config";
+import React from "react";
 
 export default function ProvidersWrapper({ children }: { children: React.ReactNode }) {
     return (

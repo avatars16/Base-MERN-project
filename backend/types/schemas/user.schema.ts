@@ -49,8 +49,10 @@ export const userCreateClientSchema = userCreateSchema
         message: "Passwords do not match",
         path: ["confirmPassword"],
     });
+export const userResponseSchema = userSchema.omit({ password: true });
 
 export type User = z.infer<typeof userSchema>;
 export type UserCreate = z.infer<typeof userCreateSchema>;
 export type UserLogin = z.infer<typeof userLoginSchema>;
 export type UserCreateClient = z.infer<typeof userCreateClientSchema>;
+export type UserResponse = z.infer<typeof userResponseSchema>;

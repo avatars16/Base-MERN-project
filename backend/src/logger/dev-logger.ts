@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from "winston";
 import "winston-daily-rotate-file";
-const { combine, timestamp, label, printf, prettyPrint, align, colorize } = format;
+const { combine, timestamp, printf, prettyPrint, align, colorize } = format;
 
 function buildDevLogger() {
     const userLog = printf(({ level, message, timestamp, stack }) => {
