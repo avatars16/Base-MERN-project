@@ -51,6 +51,7 @@ const AuthScreen = () => {
             <Controller
                 name="email"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <TextField
                         autoFocus
@@ -70,6 +71,7 @@ const AuthScreen = () => {
             <Controller
                 name="password"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <PasswordInput
                         label={<TranslateText tKey="password" params={{ ns: "input" }} />}

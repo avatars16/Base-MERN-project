@@ -1,0 +1,8 @@
+{
+    "custom_invalid_string": {
+        "include_uppercase_letter": "Tekst moet minstens één hoofdletter bevatten",
+        "include_lowercase_letter": "Tekst moet minstens één kleine letter bevatten",
+        "include_number": "Tekst moet minstens één nummer bevatten",
+        "include_special_character": "Tekst moet minstens één speciaal teken bevatten"
+    }
+}

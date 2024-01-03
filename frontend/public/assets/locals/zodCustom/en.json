@@ -1,0 +1,8 @@
+{
+    "custom_invalid_string": {
+        "include_uppercase_letter": "String must include at least one capital letter",
+        "include_lowercase_letter": "String must include at least one lowercase letter",
+        "include_number": "String must include at least one number",
+        "include_special_character": "String must include at least one special character"
+    }
+}

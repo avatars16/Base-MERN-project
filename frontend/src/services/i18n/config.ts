@@ -3,6 +3,8 @@ import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi, { HttpBackendOptions } from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
+import z from "zod";
+import { makeZodI18nMap } from "zod-i18n-map";
 
 //Tutorial: https://www.youtube.com/watch?v=w04LXKlusCQ&t
 export default i18next
@@ -13,7 +15,7 @@ export default i18next
         fallbackLng: "nl",
         // debug: true,
         defaultNS: "common",
-        ns: ["common", "input", "ui", "homePage", "authPage", "profilePage"],
+        ns: ["common", "zod", "zodCustom", "input", "ui", "homePage", "authPage", "profilePage"],
         detection: {
             order: [
                 "querystring",
@@ -48,3 +50,4 @@ export default i18next
             useSuspense: true,
         },
     });
+z.setErrorMap(makeZodI18nMap({ ns: ["zod", "zodCustom"] }));

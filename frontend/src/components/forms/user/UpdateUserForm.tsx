@@ -99,6 +99,7 @@ const UpdateUserForm = () => {
             <Controller
                 name="password"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <PasswordInput
                         label={<TranslateText tKey="input:password" />}
@@ -112,6 +113,7 @@ const UpdateUserForm = () => {
             <Controller
                 name="confirmPassword"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <PasswordInput
                         label={<TranslateText tKey="input:confirmPassword" />}

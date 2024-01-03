@@ -51,6 +51,7 @@ const RegisterUserForm = () => {
             <Controller
                 name="name"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <TextField
                         variant="standard"
@@ -69,6 +70,7 @@ const RegisterUserForm = () => {
             <Controller
                 name="email"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <TextField
                         variant="standard"
@@ -87,6 +89,7 @@ const RegisterUserForm = () => {
             <Controller
                 name="password"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <PasswordInput
                         label={<TranslateText tKey="input:password" />}
@@ -100,6 +103,7 @@ const RegisterUserForm = () => {
             <Controller
                 name="confirmPassword"
                 control={control}
+                defaultValue={""}
                 render={({ field: { ref, ...field } }) => (
                     <PasswordInput
                         label={<TranslateText tKey="input:confirmPassword" />}
