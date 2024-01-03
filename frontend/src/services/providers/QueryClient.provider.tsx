@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-query";
-import { ApiReponseError } from "../../../../backend/types/api-error-response";
+import { ErrorResponse } from "../../../../shared/types/responses/error-response";
 
 export default function QueryClientWrapper({ children }: { children: React.ReactNode }) {
     //If we ever wanna do global error handling for react-query, here is the tutorial:
     //https://www.paulashraf.com/blog/global-error-handler-react-query
     const queryCache = new QueryCache({
         onError: (error, query) => {
-            const err = error as unknown as ApiReponseError;
+            const err = error as unknown as ErrorResponse;
             console.log(err);
             //If we get a unauthorized or forbidden error, set data to null to invalidate the cache
             if (err.error.code == 400 || err.error.code == 401 || err.error.code == 403) {
@@ -19,7 +19,7 @@ export default function QueryClientWrapper({ children }: { children: React.React
         defaultOptions: {
             queries: {
                 retry: (failureCount, error) => {
-                    const apiReponseError = error as unknown as ApiReponseError;
+                    const apiReponseError = error as unknown as ErrorResponse;
                     if (apiReponseError.error.code == 401 || apiReponseError.error.code == 403) return false;
                     if (failureCount > 3) return false;
                     return true;

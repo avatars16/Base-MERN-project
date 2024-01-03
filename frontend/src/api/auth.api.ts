@@ -1,6 +1,6 @@
 // import { CredentialResponse } from "@react-oauth/google";
 import api from "./axios.config";
-import { UserCreateClient } from "../../../backend/types/schemas/User.schema";
+import { UserCreateClient } from "../../../shared/types/schemas/user.schema";
 
 export function loginUserApi({ email, password }: { email: string; password: string }) {
     return api.post("/api/users/auth", { email, password });

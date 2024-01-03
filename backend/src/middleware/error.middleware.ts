@@ -3,15 +3,7 @@ import logger from "../logger";
 import PermissionError from "../errors/permission-error";
 import { ValidationError } from "sequelize";
 import { handleSequilizeValidationError } from "../errors/sequilize-validation.error";
-
-export type ErrorResponse = {
-    success: boolean;
-    error: {
-        code: number;
-        message: string;
-        stack?: string | undefined;
-    };
-};
+import { GenericErrorResponse } from "../../../shared/types/responses/base-response";
 
 const notFound = (req: Request, res: Response, next: NextFunction) => {
     const error = new Error(`Not found -${req.originalUrl}`);
@@ -25,12 +17,13 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
     let message = err.message;
     if (err instanceof PermissionError) return PermissionError.handle(err, req, res, next);
     if (err instanceof ValidationError) return handleSequilizeValidationError(err, req, res, next);
-    const response: ErrorResponse = {
+    const response: GenericErrorResponse = {
         success: false,
         error: {
             code: statusCode,
+            name: "GenericError",
+            originalName: err.name,
             message: message,
-            stack: process.env.NODE_ENV === `production` ? undefined : err.stack,
         },
     };
     res.status(statusCode).json(response);

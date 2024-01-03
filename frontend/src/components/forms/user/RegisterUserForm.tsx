@@ -10,10 +10,11 @@ import PasswordInput from "../../../components/inputs/PasswordInput";
 import useAuth from "../../../hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserCreateClient, userCreateClientSchema } from "../../../../../backend/types/schemas/User.schema";
+import { UserCreateClient, userCreateClientSchema } from "../../../../../shared/types/schemas/user.schema";
 import { snackbarContext } from "../../../services/providers/Snackbar.provider";
 import { handleFormErrors } from "../../../utils/handle-form-errors";
 import PrimaryButton from "../../UI/buttons/PrimaryButton";
+import { ErrorResponse } from "../../../../../shared/types/responses/error-response";
 
 const RegisterUserForm = () => {
     const { registerUser, userInfo } = useAuth();
@@ -39,7 +40,8 @@ const RegisterUserForm = () => {
             await registerUser.mutateAsync(data);
             navigate("/");
         } catch (error: unknown) {
-            handleFormErrors<UserCreateClient>(error, setError, setSnackbarContext);
+            const API_ERROR = error as unknown as ErrorResponse;
+            handleFormErrors<UserCreateClient>(API_ERROR, setError, setSnackbarContext);
         }
     };
 

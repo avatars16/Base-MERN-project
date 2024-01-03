@@ -6,13 +6,13 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import useAuth from "../../../hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";
-import { UserCreateClient, userCreateClientSchema } from "../../../../../backend/types/schemas/User.schema";
+import { UserCreateClient, userCreateClientSchema } from "../../../../../shared/types/schemas/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TranslateText from "../../../components/shared/TranslateText";
 import PasswordInput from "../../../components/inputs/PasswordInput";
 import { handleFormErrors } from "../../../utils/handle-form-errors";
 import { snackbarContext } from "../../../services/providers/Snackbar.provider";
-import { ApiReponseError } from "../../../../../backend/types/api-error-response";
+import { ErrorResponse } from "../../../../../shared/types/responses/error-response";
 import ErrorButton from "../../UI/buttons/ErrorButton";
 import PrimaryButton from "../../UI/buttons/PrimaryButton";
 import { useTranslation } from "react-i18next";
@@ -38,8 +38,9 @@ const UpdateUserForm = () => {
         try {
             await updateUser.mutateAsync(data);
             navigate("/");
-        } catch (err: unknown) {
-            handleFormErrors<UserCreateClient>(err, setError, setSnackbarContext);
+        } catch (error: unknown) {
+            const API_ERROR = error as unknown as ErrorResponse;
+            handleFormErrors<UserCreateClient>(API_ERROR, setError, setSnackbarContext);
         }
     };
 
@@ -49,9 +50,9 @@ const UpdateUserForm = () => {
         try {
             await deleteUser.mutateAsync();
             navigate("/");
-        } catch (err: unknown) {
-            const error = err as ApiReponseError;
-            setSnackbarContext({ open: true, message: error?.error.message, severity: "error" });
+        } catch (error: unknown) {
+            const API_ERROR = error as ErrorResponse;
+            setSnackbarContext({ open: true, message: API_ERROR.error.message, severity: "error" });
         }
     };
 

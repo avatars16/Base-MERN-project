@@ -1,36 +1,26 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../logger";
-import { ErrorResponse } from "../middleware/error.middleware";
-
-type Fields = { [key: string]: string }[];
-
-export type ValidationErrorResponse = ErrorResponse & {
-    error: {
-        code: number;
-        message: string;
-        fields?: Fields;
-    };
-};
+import { Fields, ValidationErrorResponse } from "../../../shared/types/responses/validation-error-response";
 
 class ValidationError extends Error {
-    name: string;
     fields?: Fields;
     constructor(message: string, fields?: Fields) {
         super(message);
-        this.name = "ValidationError";
         this.fields = fields;
     }
     // Custom static method to handle ValidationError
     static handle(error: ValidationError, _req: Request, res: Response, _next: NextFunction) {
         logger.warn(error.message);
-        res.status(400).json({
+        const response: ValidationErrorResponse = {
             success: false,
             error: {
                 code: 400,
+                name: "ValidationError",
                 message: error.message || "Validation Error",
-                fields: error.fields || [],
+                fields: error.fields,
             },
-        });
+        };
+        res.status(400).json(response);
     }
 }
 

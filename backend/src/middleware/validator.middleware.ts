@@ -8,7 +8,7 @@ const validatorHandler = expressAsyncHandler((req, res, next) => {
     if (errors.isEmpty()) return next();
     const formatedError = errors.array().map((error) => {
         // @ts-ignore - error.path does not exists according to ts, but it does.
-        return { name: error.path, message: error.msg };
+        return { path: error.path, message: error.msg };
     });
     throw new ValidationError("Express validation error", formatedError);
 });

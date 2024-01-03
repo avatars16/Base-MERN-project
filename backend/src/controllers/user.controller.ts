@@ -4,7 +4,7 @@ import generateToken from "../utils/generate-token";
 import jwt from "jsonwebtoken";
 import ValidationError from "../errors/validation-error";
 import { TokenPayload } from "google-auth-library";
-import { userCreateSchema } from "../../types/schemas/user.schema";
+import { userCreateSchema } from "../../../shared/types/schemas/user.schema";
 /**
  * @route POST /api/users/auth
  * @access Public

@@ -12,14 +12,14 @@ const protect = asyncHandler(async (req, res, next) => {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET!) as jwtUserToken;
             let user = await User.findByPk(decoded.userId); //.select("-password");
-            if (user === null) throw new PermissionError("unauthorized", "invalid user id");
+            if (user === null) throw new PermissionError("Unauthorized", "invalid user id");
             req.user = user;
             next();
         } catch (error) {
-            throw new PermissionError("unauthorized", "invalid token");
+            throw new PermissionError("Unauthorized", "invalid token");
         }
     } else {
-        throw new PermissionError("unauthorized", "no token");
+        throw new PermissionError("Unauthorized", "no token");
     }
 });
 

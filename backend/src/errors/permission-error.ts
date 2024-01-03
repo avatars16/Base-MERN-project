@@ -1,40 +1,41 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../logger";
-import { ErrorResponse } from "../middleware/error.middleware";
-
-type errorType = "unauthorized" | "forbidden";
-
-export type PermissionErrorResponse = ErrorResponse & {
-    error: {
-        name: errorType;
-        code: number;
-        message: string;
-    };
-};
+import {
+    PermissionErrorNames,
+    PermissionErrorResponse,
+} from "../../../shared/types/responses/permission-error-response";
 
 class PermissionError extends Error {
-    name: string;
-    type: errorType;
-    code: number;
-    constructor(type: errorType, message: string) {
+    type: PermissionErrorNames;
+    constructor(type: PermissionErrorNames, message: string) {
         super(message);
-        this.name = "PermissionError";
         this.type = type;
-        this.code = type === "unauthorized" ? 401 : 403;
     }
     // Custom static method to handle ValidationError
     static handle(error: PermissionError, _req: Request, res: Response, _next: NextFunction) {
         error.message = `${error.type}: ${error.message}` || "Permission Error";
         logger.warn(error.message);
-        const reponse: PermissionErrorResponse = {
-            success: false,
-            error: {
-                name: error.type,
-                code: error.type === "unauthorized" ? 401 : 403,
-                message: error.message,
-            },
-        };
-        res.status(error.code).json(reponse);
+        let response: PermissionErrorResponse;
+        if (error.type === "Unauthorized") {
+            response = {
+                success: false,
+                error: {
+                    name: "Unauthorized",
+                    code: 401,
+                    message: error.message,
+                },
+            };
+        } else {
+            response = {
+                success: false,
+                error: {
+                    name: "Forbidden",
+                    code: 403,
+                    message: error.message,
+                },
+            };
+        }
+        res.status(response.error.code).json(response);
     }
 }
 

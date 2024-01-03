@@ -8,7 +8,7 @@ import {
     registerUserApi,
     updateUserApi,
 } from "../api/auth.api";
-import { UserResponse } from "../../../backend/types/schemas/User.schema";
+import { UserResponse } from "../../../shared/types/schemas/user.schema";
 const useAuth = () => {
     const queryClient = useQueryClient();
     useQuery({ queryKey: ["user"], queryFn: getUserApi, staleTime: 1000 * 60 * 60 });
