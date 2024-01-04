@@ -10,7 +10,10 @@ import PasswordInput from "../../../components/inputs/PasswordInput";
 import useAuth from "../../../hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserCreateClient, userCreateClientSchema } from "../../../../../shared/types/schemas/user.schema";
+import {
+    UserCreateOrUpdateClient,
+    userCreateOrUpdateClientSchema,
+} from "../../../../../shared/types/schemas/user.schema";
 import { snackbarContext } from "../../../services/providers/Snackbar.provider";
 import { handleFormErrors } from "../../../utils/handle-form-errors";
 import PrimaryButton from "../../UI/buttons/PrimaryButton";
@@ -25,23 +28,23 @@ const RegisterUserForm = () => {
         handleSubmit,
         setError,
         formState: { errors },
-    } = useForm<UserCreateClient>({
+    } = useForm<UserCreateOrUpdateClient>({
         mode: "onChange",
-        resolver: zodResolver(userCreateClientSchema),
+        resolver: zodResolver(userCreateOrUpdateClientSchema),
     });
 
     useEffect(() => {
         if (userInfo) navigate("/");
     }, [navigate, userInfo]);
 
-    const submitHandler = async (data: UserCreateClient) => {
+    const submitHandler = async (data: UserCreateOrUpdateClient) => {
         console.log(data);
         try {
             await registerUser.mutateAsync(data);
             navigate("/");
         } catch (error: unknown) {
             const API_ERROR = error as unknown as ErrorResponse;
-            handleFormErrors<UserCreateClient>(API_ERROR, setError, setSnackbarContext);
+            handleFormErrors<UserCreateOrUpdateClient>(API_ERROR, setError, setSnackbarContext);
         }
     };
 

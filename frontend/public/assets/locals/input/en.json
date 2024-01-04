@@ -1,6 +1,6 @@
 {
+    "name": "Name",
     "email": "Email",
     "password": "Password",
-    "confirmPassword": "Confirm password",
-    "name": "Name"
+    "confirmPassword": "Confirm password"
 }

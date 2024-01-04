@@ -6,7 +6,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import useAuth from "../../../hooks/useAuth";
 import { Controller, useForm } from "react-hook-form";
-import { UserCreateClient, userCreateClientSchema } from "../../../../../shared/types/schemas/user.schema";
+import {
+    UserCreateOrUpdateClient,
+    userCreateOrUpdateClientSchema,
+} from "../../../../../shared/types/schemas/user.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TranslateText from "../../../components/shared/TranslateText";
 import PasswordInput from "../../../components/inputs/PasswordInput";
@@ -28,19 +31,19 @@ const UpdateUserForm = () => {
         handleSubmit,
         setError,
         formState: { errors },
-    } = useForm<UserCreateClient>({
+    } = useForm<UserCreateOrUpdateClient>({
         mode: "onChange",
-        resolver: zodResolver(userCreateClientSchema),
+        resolver: zodResolver(userCreateOrUpdateClientSchema),
     });
     useEffect(() => {}, [userInfo]);
 
-    const submitHandler = async (data: UserCreateClient) => {
+    const submitHandler = async (data: UserCreateOrUpdateClient) => {
         try {
             await updateUser.mutateAsync(data);
             navigate("/");
         } catch (error: unknown) {
             const API_ERROR = error as unknown as ErrorResponse;
-            handleFormErrors<UserCreateClient>(API_ERROR, setError, setSnackbarContext);
+            handleFormErrors<UserCreateOrUpdateClient>(API_ERROR, setError, setSnackbarContext);
         }
     };
 

@@ -18,9 +18,9 @@ export const userSchema = z.object({
     email: z.string().email(),
     password: password,
 });
-export const userCreateSchema = userSchema.omit({ id: true });
-export const userLoginSchema = userCreateSchema.omit({ name: true });
-export const userCreateClientSchema = userCreateSchema
+export const userCreateOrUpdateSchema = userSchema.omit({ id: true });
+export const userLoginSchema = userCreateOrUpdateSchema.omit({ name: true });
+export const userCreateOrUpdateClientSchema = userCreateOrUpdateSchema
     .extend({ confirmPassword: password.optional() })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
@@ -29,7 +29,7 @@ export const userCreateClientSchema = userCreateSchema
 export const userResponseSchema = userSchema.omit({ password: true });
 
 export type User = z.infer<typeof userSchema>;
-export type UserCreate = z.infer<typeof userCreateSchema>;
+export type UserCreateOrUpdate = z.infer<typeof userCreateOrUpdateSchema>;
 export type UserLogin = z.infer<typeof userLoginSchema>;
-export type UserCreateClient = z.infer<typeof userCreateClientSchema>;
+export type UserCreateOrUpdateClient = z.infer<typeof userCreateOrUpdateClientSchema>;
 export type UserResponse = z.infer<typeof userResponseSchema>;

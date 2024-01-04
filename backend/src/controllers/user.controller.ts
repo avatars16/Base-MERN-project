@@ -4,7 +4,7 @@ import generateToken from "../utils/generate-token";
 import jwt from "jsonwebtoken";
 import ValidationError from "../errors/validation-error";
 import { TokenPayload } from "google-auth-library";
-import { userCreateSchema } from "../../../shared/types/schemas/user.schema";
+import { userCreateOrUpdateSchema } from "../../../shared/types/schemas/user.schema";
 /**
  * @route POST /api/users/auth
  * @access Public
@@ -68,7 +68,7 @@ const googleAuthUser = asyncHandler(async (req, res) => {
  * @param {user:User} req.body
  */
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = userCreateSchema.parse(req.body);
+    const { name, email, password } = userCreateOrUpdateSchema.parse(req.body);
     const user = await User.create({
         name,
         email,

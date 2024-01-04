@@ -55,7 +55,7 @@ export default function MuiProvider({ children }: { children: React.ReactNode })
     }, [mode, locale]);
     useEffect(() => {
         document.dir = locale.direction;
-        document.title = t("header.title");
+        document.title = t("common:title");
     }, [locale, t]);
 
     return (

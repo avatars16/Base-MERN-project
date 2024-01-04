@@ -28,6 +28,15 @@ export default i18next
                 "subdomain",
             ],
         },
+        // missingKeyHandler: (lngs, ns, key, fallbackValue, updateMissing, options) => {
+        //     console.log(lngs, ns, key, fallbackValue, updateMissing, options);
+        //     return "test test joe";
+        // },
+
+        // parseMissingKeyHandler: (key) => {
+        //     console.log("parse deze zooi", key);
+        // },
+        saveMissing: true,
         backend: {
             loadPath: "/assets/locals/{{ns}}/{{lng}}.json",
             request: async (_options, url, _payload, callback) => {
@@ -50,4 +59,5 @@ export default i18next
             useSuspense: true,
         },
     });
+
 z.setErrorMap(makeZodI18nMap({ ns: ["zod", "zodCustom"] }));
